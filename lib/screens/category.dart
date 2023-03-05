@@ -40,6 +40,9 @@ class _CategoryState extends State<Category> {
               onPressed: () {
                 // Make Bottom Sheet
                 showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   context: context,
                   builder: (BuildContext context) {
                     return SingleChildScrollView(
@@ -121,7 +124,7 @@ class _CategoryState extends State<Category> {
                       },
                     );
                   } else {
-                    return const Center(child: Text('No data'));
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),

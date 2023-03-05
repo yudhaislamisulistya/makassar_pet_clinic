@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/category.dart';
 import 'package:makassar_pet_clinic/components/doctor.dart';
 import 'package:makassar_pet_clinic/const.dart';
-import 'package:makassar_pet_clinic/controllers/category_controller.dart';
-import 'package:makassar_pet_clinic/cores/category_manager.dart';
+import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
+import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 
 import 'package:makassar_pet_clinic/screens/category.dart' as category_screen;
+import 'package:makassar_pet_clinic/screens/doctor.dart' as doctor_screen;
+import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -18,9 +20,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final DoctorController doctorController = Get.put(DoctorController());
+  final DoctorManager doctorManager = Get.put(DoctorManager());
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      doctorManager.doctor.clear();
+      doctorController.getDoctor();
+    });
   }
 
   @override
@@ -55,16 +63,22 @@ class _DashboardState extends State<Dashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Make Icon Appbar
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: const BoxDecoration(
-                        color: colorPrimary,
-                        borderRadius: borderRadiusRectangle,
-                      ),
-                      child: const Icon(
-                        Icons.menu,
-                        color: colorWhite,
+                    InkWell(
+                      onTap: () {
+                        // make error getx snack bar
+                        Get.showSnackbar(snackBarError("Fitur Belum Tersedia"));
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                          color: colorPrimary,
+                          borderRadius: borderRadiusRectangle,
+                        ),
+                        child: const Icon(
+                          Icons.menu,
+                          color: colorWhite,
+                        ),
                       ),
                     ),
                     // Make Profile Picture Rectangle With Image
@@ -231,42 +245,50 @@ class _DashboardState extends State<Dashboard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Top Rated Doctor", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold)),
-                        Text("See All", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorGrayDark)),
+                        InkWell(
+                            onTap: () {
+                              Get.to(const doctor_screen.Doctor());
+                            },
+                            child: Text("See All", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorGrayDark))),
                       ],
                     ),
                   ],
                 ),
               ),
-              Column(
-                children: const [
-                  Doctor(
-                    image: 'assets/images/doctor1.jpeg',
-                    name: 'Dr. Yudha Islami Sulistya',
-                    specialist: 'Pyschologist',
-                    rating: 3,
-                  ),
-                  Doctor(
-                    image: 'assets/images/doctor2.jpeg',
-                    name: 'Dr. Yudha Islami Sulistya',
-                    specialist: 'Dentist',
-                    rating: 5,
-                  ),
-                  Doctor(
-                    image: 'assets/images/doctor3.jpeg',
-                    name: 'Dr. Yudha Islami Sulistya',
-                    specialist: 'Emergency',
-                    rating: 5,
-                  ),
-                  Doctor(
-                    image: 'assets/images/doctor3.jpeg',
-                    name: 'Dr. Yudha Islami Sulistya',
-                    specialist: 'Emergency',
-                    rating: 5,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: Get.height * 0.02,
+              Container(
+                decoration: const BoxDecoration(
+                  color: colorWhite,
+                  borderRadius: borderRadiusRectangle,
+                ),
+                child: Obx(
+                  () {
+                    if (doctorManager.isDoctorLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (doctorManager.isDoctorError.value) {
+                      return const Center(child: Text('Error'));
+                    } else if (doctorManager.isDoctorEmpty.value) {
+                      return const Center(child: Text('Empty'));
+                    } else if (doctorManager.isDoctorSuccess.value) {
+                      return Transform.translate(
+                        offset: Offset(0, Get.height * -0.04),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: doctorManager.doctor.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return doctor_component.Doctor(
+                              index: index,
+                              doctorManager: doctorManager,
+                              rating: 2,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
               ),
             ],
           ),

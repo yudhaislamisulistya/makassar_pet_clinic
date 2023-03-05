@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 String urlSupabase = 'https://uilsyzbuczmhoqlqvuhf.supabase.co';
 String anonKeySupabase = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbHN5emJ1Y3ptaG9xbHF2dWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc5MzU2NDYsImV4cCI6MTk5MzUxMTY0Nn0.BNUrhNUyKrpWXujuwy8ix_GyjTfpn-MCSCZIeGalOHM';
+
+const String appVersionDate = '2023-03-01';
+const String appVersion = '1.0.0';
 
 const Color colorPrimary = Color(0xFFFFC727);
 const Color colorPrimaryLight = Color(0xFFFFF5C7);
@@ -12,6 +16,66 @@ const Color colorGrayDark = Color(0xFF9E9E9E);
 const Color colorGrayLight = Color(0xFFFAFAFA);
 const Color colorSuccess = Color(0xFF4CAF50);
 const Color colorError = Color(0xFFD32F2F);
+
+// GetSnackBar snackBarError With Parameter
+GetSnackBar snackBarError(String message) {
+  return GetSnackBar(
+    title: "Error",
+    message: message,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: colorError,
+    borderRadius: 0,
+    margin: const EdgeInsets.all(0),
+    snackStyle: SnackStyle.FLOATING,
+    animationDuration: const Duration(milliseconds: 500),
+    forwardAnimationCurve: Curves.easeOutBack,
+    reverseAnimationCurve: Curves.easeInBack,
+    isDismissible: true,
+    duration: const Duration(seconds: 3),
+    icon: const Icon(
+      Icons.error,
+      color: colorWhite,
+    ),
+    shouldIconPulse: true,
+    mainButton: TextButton(
+      onPressed: () {},
+      child: const Text(
+        'OK',
+        style: TextStyle(color: colorWhite),
+      ),
+    ),
+  );
+}
+
+// GetSnackBar snackBarSuccess With Parameter
+GetSnackBar snackBarSuccess(String message) {
+  return GetSnackBar(
+    title: "Success",
+    message: message,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: colorSuccess,
+    borderRadius: 0,
+    margin: const EdgeInsets.all(0),
+    snackStyle: SnackStyle.FLOATING,
+    animationDuration: const Duration(milliseconds: 500),
+    forwardAnimationCurve: Curves.easeOutBack,
+    reverseAnimationCurve: Curves.easeInBack,
+    isDismissible: true,
+    duration: const Duration(seconds: 3),
+    icon: const Icon(
+      Icons.check_circle,
+      color: colorWhite,
+    ),
+    shouldIconPulse: true,
+    mainButton: TextButton(
+      onPressed: () {},
+      child: const Text(
+        'OK',
+        style: TextStyle(color: colorWhite),
+      ),
+    ),
+  );
+}
 
 const MaterialColor colorPrimarySwatch = MaterialColor(
   0xFFFFC727,

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/cores/category_manager.dart';
 import 'package:makassar_pet_clinic/models/category/category_request_model.dart';
 import 'package:makassar_pet_clinic/services/category_service.dart';
@@ -17,7 +18,7 @@ class CategoryController extends GetxController {
   Future<void> getCategory() async {
     final response = await categoryService.getCategory();
     if (response == null) {
-      Get.snackbar('Error', 'Failed to get category');
+      Get.showSnackbar(snackBarError("Gagal Mendapatkan Kategori"));
     } else {
       categoryManager.saveCategory(response);
     }
@@ -27,11 +28,11 @@ class CategoryController extends GetxController {
     final response = await categoryService.addCategory(CategoryRequestModel(name: name));
     if (response) {
       Get.back();
-      Get.snackbar('Success', 'Category added');
+      Get.showSnackbar(snackBarSuccess("Berhasil Menambahkan Kategori"));
       getCategory();
     } else {
       Get.back();
-      Get.snackbar('Error', 'Failed to add category');
+      Get.showSnackbar(snackBarError("Gagal Menambahkan Kategori"));
     }
   }
 
@@ -39,11 +40,11 @@ class CategoryController extends GetxController {
     final response = await categoryService.deleteCategory(CategoryRequestModel(id: id));
     if (response) {
       Get.back();
-      Get.snackbar('Success', 'Category deleted');
+      Get.showSnackbar(snackBarSuccess("Berhasil Menghapus Kategori"));
       getCategory();
     } else {
       Get.back();
-      Get.snackbar('Error', 'Failed to delete category');
+      Get.showSnackbar(snackBarError("Gagal Menghapus Kategori"));
     }
   }
 
@@ -51,11 +52,11 @@ class CategoryController extends GetxController {
     final response = await categoryService.updateCategory(CategoryRequestModel(id: id, name: name));
     if (response) {
       Get.back();
-      Get.snackbar('Success', 'Category updated');
+      Get.showSnackbar(snackBarSuccess("Berhasil Mengubah Kategori"));
       getCategory();
     } else {
       Get.back();
-      Get.snackbar('Error', 'Failed to update category');
+      Get.showSnackbar(snackBarError("Gagal Mengubah Kategori"));
     }
   }
 }
