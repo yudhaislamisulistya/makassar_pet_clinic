@@ -94,7 +94,7 @@ class AboutState extends State<Profile> {
                           height: 10,
                         ),
                         const Text(
-                          "Yudha Islami Sulistya",
+                          "M. Kamil",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -105,7 +105,7 @@ class AboutState extends State<Profile> {
                           height: 5,
                         ),
                         const Text(
-                          "yudhamaster77@gmail.com",
+                          "mkamil@gmail.com@gmail.com",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,

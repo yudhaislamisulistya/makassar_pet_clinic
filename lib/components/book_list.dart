@@ -32,7 +32,7 @@ class BookList extends StatelessWidget {
             // Add border bottom color only
           ),
           child: ListTile(
-            title: Text('Dr. Yudha Islami Sulistya', style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold)),
+            title: Text('Dr. M. Kamil', style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold)),
             subtitle: Text('23 Maret 2023', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
             // Make Trailing With Icon Status Book
             trailing: Icon(iconStatus, color: colorStatus),

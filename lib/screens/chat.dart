@@ -37,19 +37,19 @@ class _ChatState extends State<Chat> {
           child: Column(
             children: [
               ChatList(
-                name: 'Dr. Yudha Islami Sulistya',
+                name: 'Dr. M. Kamil',
                 image: 'assets/images/doctor1.jpeg',
                 lastMessage: 'Hello, I want to ask about my dog',
                 lastMessageTime: '12:00',
               ),
               ChatList(
-                name: 'Dr. Yudha Islami Sulistya',
+                name: 'Dr. M. Kamil',
                 image: 'assets/images/doctor1.jpeg',
                 lastMessage: 'Hello, I want to ask about my dog',
                 lastMessageTime: '12:00',
               ),
               ChatList(
-                name: 'Dr. Yudha Islami Sulistya',
+                name: 'Dr. M. Kamil',
                 image: 'assets/images/doctor1.jpeg',
                 lastMessage: 'Hello, I want to ask about my dog',
                 lastMessageTime: '12:00',

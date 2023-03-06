@@ -36,17 +36,17 @@ class _BookState extends State<Book> {
           child: Column(
             children: [
               BookList(
-                title: 'Dr. Yudha Islami Sulistya',
+                title: 'Dr. M. Kamil',
                 tanggal: '23 Maret 2023',
                 status: 'Success',
               ),
               BookList(
-                title: 'Dr. Yudha Islami Sulistya',
+                title: 'Dr. M. Kamil',
                 tanggal: '23 Maret 2023',
                 status: 'Failed',
               ),
               BookList(
-                title: 'Dr. Yudha Islami Sulistya',
+                title: 'Dr. M. Kamil',
                 tanggal: '23 Maret 2023',
                 status: 'Pending',
               ),

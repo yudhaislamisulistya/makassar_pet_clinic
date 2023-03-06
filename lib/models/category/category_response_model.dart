@@ -1,11 +1,15 @@
 class CategoryModel {
   final int id;
   final String name;
+  final String description;
+  final String avatar;
   final String createdAt;
 
   CategoryModel({
     required this.id,
     required this.name,
+    required this.description,
+    required this.avatar,
     required this.createdAt,
   });
 
@@ -13,6 +17,8 @@ class CategoryModel {
     return CategoryModel(
       id: json['id'] as int,
       name: json['name'] as String,
+      description: json['description'] as String,
+      avatar: json['avatar'] as String,
       createdAt: json['created_at'] as String,
     );
   }

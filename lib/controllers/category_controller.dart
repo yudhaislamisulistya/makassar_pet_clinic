@@ -25,8 +25,8 @@ class CategoryController extends GetxController {
     }
   }
 
-  Future<void> addCategory(String name) async {
-    final response = await categoryService.addCategory(CategoryRequestModel(name: name));
+  Future<void> addCategory(String name, String description, String avatar) async {
+    final response = await categoryService.addCategory(CategoryRequestModel(name: name, description: description, avatar: avatar));
     if (response) {
       Get.back();
       Get.showSnackbar(snackBarSuccess("Berhasil Menambahkan Kategori"));
@@ -49,8 +49,8 @@ class CategoryController extends GetxController {
     }
   }
 
-  Future<void> updateCategory(int id, String name) async {
-    final response = await categoryService.updateCategory(CategoryRequestModel(id: id, name: name));
+  Future<void> updateCategory(int id, String name, String description, String avatar) async {
+    final response = await categoryService.updateCategory(CategoryRequestModel(id: id, name: name, description: description, avatar: avatar));
     if (response) {
       Get.back();
       Get.showSnackbar(snackBarSuccess("Berhasil Mengubah Kategori"));

@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/category.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/controllers/category_controller.dart';
 import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
+import 'package:makassar_pet_clinic/cores/category_manager.dart';
 import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
@@ -23,6 +25,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final DoctorController doctorController = Get.put(DoctorController());
   final DoctorManager doctorManager = Get.put(DoctorManager());
+  final CategoryController categoryController = Get.put(CategoryController());
+  final CategoryManager categoryManager = Get.put(CategoryManager());
   final LoginManager loginManager = Get.put(LoginManager());
   @override
   void initState() {
@@ -31,6 +35,8 @@ class _DashboardState extends State<Dashboard> {
     Future.delayed(Duration.zero, () {
       doctorManager.doctor.clear();
       doctorController.getDoctor();
+      categoryManager.category.clear();
+      categoryController.getCategory();
     });
   }
 
@@ -215,25 +221,52 @@ class _DashboardState extends State<Dashboard> {
               // Make List View Builder
               SizedBox(
                 height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: Get.height * 0.02),
-                      child: const Category(
-                        image: 'assets/images/pyschologist.png',
-                        text: 'Pyschologist',
-                      ),
-                    ),
-                    const Category(
-                      image: 'assets/images/dentists.png',
-                      text: 'Dentists',
-                    ),
-                    const Category(
-                      image: 'assets/images/emergency.png',
-                      text: 'Emergency',
-                    ),
-                  ],
+                child: Obx(
+                  () {
+                    if (categoryManager.isCategoryLoading.value) {
+                      return Column(
+                        children: const [
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    } else if (categoryManager.isCategoryError.value) {
+                      return const Center(child: Text('Error'));
+                    } else if (categoryManager.isCategoryEmpty.value) {
+                      return Column(
+                        children: [
+                          Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+                        ],
+                      );
+                    } else if (categoryManager.isCategorySuccess.value) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: categoryManager.category.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index == 0) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Category(
+                                index: index,
+                                categoryManager: categoryManager,
+                              ),
+                            );
+                          } else {
+                            return Category(
+                              index: index,
+                              categoryManager: categoryManager,
+                            );
+                          }
+                        },
+                      );
+                    } else {
+                      return Column(
+                        children: const [
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    }
+                  },
                 ),
               ),
               SizedBox(

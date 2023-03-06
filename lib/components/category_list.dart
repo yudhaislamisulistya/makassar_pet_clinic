@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/category_controller.dart';
 import 'package:makassar_pet_clinic/main.dart';
+import 'package:makassar_pet_clinic/screens/details/detail_category.dart';
 
 class CategoryList extends StatelessWidget {
   final int index;
@@ -13,6 +14,8 @@ class CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     final CategoryController categoryController = Get.put(CategoryController());
     TextEditingController nameController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+    String selectedAvatar = 'Avatar 1';
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -35,15 +38,17 @@ class CategoryList extends StatelessWidget {
             child: Container(
               width: 25,
               height: 25,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/pyschologist.png'),
+                  image: AssetImage(categoryManager.category[index].avatar ?? 'assets/images/pyschologist.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: borderRadiusPrimary,
               ),
             ),
           ),
+          // maximal 2 line of text
+          subtitle: Text(categoryManager.category[index].description ?? '', maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey)),
           title: Text(categoryManager.category[index].name),
           trailing: SizedBox(
             width: 150,
@@ -52,7 +57,16 @@ class CategoryList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const InkWell(child: Icon(Icons.arrow_forward_ios, size: 15)),
+                InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => DetailCategory(
+                        name: categoryManager.category[index].name,
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.arrow_forward_ios, size: 15),
+                ),
                 if (loginManager.role.value == "1") ...[
                   const SizedBox(width: 8),
                   InkWell(
@@ -110,10 +124,50 @@ class CategoryList extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextField(
+                                      controller: descriptionController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Description',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  // Make DropdownButton for avatar
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: DropdownButtonFormField<String>(
+                                      value: selectedAvatar, // nilai awal dropdown
+                                      decoration: InputDecoration(
+                                        hintText: 'Avatar',
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                        hintStyle: const TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      items: <String>[
+                                        'Avatar 1',
+                                        'Avatar 2',
+                                        'Avatar 3',
+                                      ].map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        selectedAvatar = newValue!;
+                                      },
+                                    ),
+                                  ),
                                   const SizedBox(height: 10),
                                   ElevatedButton(
                                     onPressed: () {
-                                      categoryController.updateCategory(categoryManager.category[index].id, nameController.text);
+                                      categoryController.updateCategory(categoryManager.category[index].id, nameController.text, descriptionController.text, selectedAvatar);
                                     },
                                     child: Text('Update', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
                                   ),

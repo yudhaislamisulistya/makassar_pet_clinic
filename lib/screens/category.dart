@@ -20,12 +20,16 @@ class _CategoryState extends State<Category> {
   final LoginManager loginManager = Get.put(LoginManager());
 
   TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  String selectedAvatar = 'Avatar 1';
 
   @override
   void initState() {
     super.initState();
-    categoryManager.category.clear();
-    categoryController.getCategory();
+    Future.delayed(Duration.zero, () {
+      categoryManager.category.clear();
+      categoryController.getCategory();
+    });
   }
 
   @override
@@ -79,6 +83,49 @@ class _CategoryState extends State<Category> {
                                   ),
                                 ),
                               ),
+                              // Make TextField for description
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: descriptionController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Description',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Make DropdownButton for avatar
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DropdownButtonFormField<String>(
+                                  value: selectedAvatar, // nilai awal dropdown
+                                  decoration: InputDecoration(
+                                    hintText: 'Avatar',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  items: <String>[
+                                    'Avatar 1',
+                                    'Avatar 2',
+                                    'Avatar 3',
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedAvatar = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
                               const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () async {
@@ -87,7 +134,9 @@ class _CategoryState extends State<Category> {
                                     Get.snackbar('Error', 'Category name is required');
                                     return;
                                   } else {
-                                    categoryController.addCategory(nameController.text);
+                                    categoryController.addCategory(nameController.text, descriptionController.text, selectedAvatar);
+                                    nameController.clear();
+                                    descriptionController.clear();
                                   }
                                 },
                                 child: Text('Save', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
