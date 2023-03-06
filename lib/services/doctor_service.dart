@@ -75,4 +75,14 @@ class DoctorService extends GetConnect {
       return false;
     }
   }
+
+  Future<DoctorResponseModel?> getDoctorByIdExpert(int idExpert) async {
+    final response = await supabase.from('experts').select().eq('id_expert', idExpert);
+
+    if (response.isEmpty) {
+      return null;
+    } else {
+      return DoctorResponseModel.fromJson(response);
+    }
+  }
 }

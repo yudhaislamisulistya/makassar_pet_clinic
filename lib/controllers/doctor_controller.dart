@@ -98,4 +98,14 @@ class DoctorController extends GetxController {
       Get.showSnackbar(snackBarError("Gagal Mengubah Dokter"));
     }
   }
+
+  Future<void> getDoctorByIdExpert(int idExpert) async {
+    final response = await doctorService.getDoctorByIdExpert(idExpert);
+    if (response == null) {
+      Get.showSnackbar(snackBarError("Gagal Mendapatkan Customer"));
+      doctorManager.saveDoctor(null);
+    } else {
+      doctorManager.saveDoctor(response);
+    }
+  }
 }

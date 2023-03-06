@@ -77,6 +77,8 @@ class _CategoryState extends State<Category> {
                                   controller: nameController,
                                   decoration: InputDecoration(
                                     hintText: 'Category Name',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -90,6 +92,8 @@ class _CategoryState extends State<Category> {
                                   controller: descriptionController,
                                   decoration: InputDecoration(
                                     hintText: 'Description',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

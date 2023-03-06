@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/controllers/booking_controller.dart';
+import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
+import 'package:makassar_pet_clinic/cores/customer_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
@@ -23,10 +26,19 @@ class DetailDoctor extends StatefulWidget {
 
 class _DetailDoctorState extends State<DetailDoctor> {
   final LoginManager loginManager = Get.find<LoginManager>();
+  final BookingController bookingController = Get.put(BookingController());
+  final CustomerController customerController = Get.put(CustomerController());
+  final CustomerManager customerManager = Get.put(CustomerManager());
   String selectedDate = "";
+  late int idUser;
+  late int idExpert;
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      customerController.getCustomerByIdUser(int.parse(loginManager.id.value));
+      idExpert = widget.doctorManager.doctor[widget.index].id;
+    });
   }
 
   @override
@@ -328,54 +340,81 @@ ${widget.doctorManager.doctor[widget.index].about!}
                     ),
                   ),
                   // Make BottomSheet With Button Book An Appointment
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ButtonTheme(
-                      minWidth: Get.width,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // check if selectedDate is null
-                          if (selectedDate.isEmpty) {
-                            Get.showSnackbar(snackBarError("Silahkan pilih tanggal terlebih dahulu"));
-                          } else {
-                            if (DateFormat('dd MMMM yyyy').parse(selectedDate).isBefore(DateTime.now())) {
-                              Get.showSnackbar(snackBarError("Tanggal yang dipilih tidak boleh kurang dari hari ini"));
-                              return;
-                            }
+                  Obx(() {
+                    if (customerManager.isCustomerLoading.value) {
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    } else if (customerManager.isCustomerError.value) {
+                      return const Center(child: Text('Error'));
+                    } else if (customerManager.isCustomerEmpty.value) {
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+                        ],
+                      );
+                    } else if (customerManager.isCustomerSuccess.value) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ButtonTheme(
+                          minWidth: Get.width,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // check if selectedDate is null
+                              if (selectedDate.isEmpty) {
+                                Get.showSnackbar(snackBarError("Silahkan pilih tanggal terlebih dahulu"));
+                              } else {
+                                if (DateFormat('dd MMMM yyyy').parse(selectedDate).isBefore(DateTime.now())) {
+                                  Get.showSnackbar(snackBarError("Tanggal yang dipilih tidak boleh kurang dari hari ini"));
+                                  return;
+                                }
 
-                            if (loginManager.role.value == "1" || loginManager.role.value == "1") {
-                              Get.showSnackbar(snackBarError("Maaf, Anda tidak memiliki akses untuk melakukan booking, Hanya User yang dapat melakukan booking"));
-                              return;
-                            }
-                            Get.defaultDialog(
-                              title: "Konfirmasi",
-                              middleText: "Apakah Anda yakin ingin melakukan booking pada tanggal $selectedDate?",
-                              textConfirm: "Ya",
-                              textCancel: "Tidak",
-                              confirmTextColor: colorWhite,
-                              cancelTextColor: colorPrimary,
-                              buttonColor: colorPrimary,
-                              onConfirm: () {
-                                Get.back();
-                                Get.showSnackbar(snackBarSuccess("Terima kasih telah melakukan booking, Silahkan tunggu konfirmasi dari dokter dan cek pada riwayat booking"));
-                              },
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: colorPrimary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                                if (loginManager.role.value == "1" || loginManager.role.value == "1") {
+                                  Get.showSnackbar(snackBarError("Maaf, Anda tidak memiliki akses untuk melakukan booking, Hanya User yang dapat melakukan booking"));
+                                  return;
+                                }
+                                Get.defaultDialog(
+                                  title: "Konfirmasi",
+                                  middleText: "Apakah Anda yakin ingin melakukan booking pada tanggal $selectedDate?",
+                                  textConfirm: "Ya",
+                                  textCancel: "Tidak",
+                                  confirmTextColor: colorWhite,
+                                  cancelTextColor: colorPrimary,
+                                  buttonColor: colorPrimary,
+                                  onConfirm: () {
+                                    idUser = customerManager.customer.first.id;
+                                    bookingController.addBooking(idUser, idExpert, "1", "-", selectedDate);
+                                  },
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colorPrimary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            child: Text(
+                              "Book An Appointment",
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorWhite),
+                            ),
                           ),
                         ),
-                        child: Text(
-                          "Book An Appointment",
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorWhite),
-                        ),
-                      ),
-                    ),
-                  )
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    }
+                  }),
                 ],
               ),
             ],

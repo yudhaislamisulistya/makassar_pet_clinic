@@ -17,6 +17,36 @@ const Color colorGrayLight = Color(0xFFFAFAFA);
 const Color colorSuccess = Color(0xFF4CAF50);
 const Color colorError = Color(0xFFD32F2F);
 
+// GetSnackBar snackBarSecondary With Parameter
+GetSnackBar snackBarSecondary(String message) {
+  return GetSnackBar(
+    title: "Info",
+    message: message,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: colorGrayDark,
+    borderRadius: 0,
+    margin: const EdgeInsets.all(0),
+    snackStyle: SnackStyle.FLOATING,
+    animationDuration: const Duration(milliseconds: 500),
+    forwardAnimationCurve: Curves.easeOutBack,
+    reverseAnimationCurve: Curves.easeInBack,
+    isDismissible: true,
+    duration: const Duration(seconds: 3),
+    icon: const Icon(
+      Icons.info,
+      color: colorWhite,
+    ),
+    shouldIconPulse: true,
+    mainButton: TextButton(
+      onPressed: () {},
+      child: const Text(
+        'OK',
+        style: TextStyle(color: colorWhite),
+      ),
+    ),
+  );
+}
+
 // GetSnackBar snackBarError With Parameter
 GetSnackBar snackBarError(String message) {
   return GetSnackBar(

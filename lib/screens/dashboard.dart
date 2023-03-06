@@ -30,12 +30,12 @@ class _DashboardState extends State<Dashboard> {
   final LoginManager loginManager = Get.put(LoginManager());
   @override
   void initState() {
+    doctorManager.doctor.clear();
+    categoryManager.category.clear();
     loginManager.setUser();
     super.initState();
     Future.delayed(Duration.zero, () {
-      doctorManager.doctor.clear();
       doctorController.getDoctor();
-      categoryManager.category.clear();
       categoryController.getCategory();
     });
   }
