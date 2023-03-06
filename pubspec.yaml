@@ -44,6 +44,8 @@ dependencies:
   url_launcher: ^6.1.10
   syncfusion_flutter_calendar: ^20.4.52
   intl: ^0.18.0
+  chat_bubbles: ^1.4.1
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

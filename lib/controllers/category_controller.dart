@@ -19,6 +19,7 @@ class CategoryController extends GetxController {
     final response = await categoryService.getCategory();
     if (response == null) {
       Get.showSnackbar(snackBarError("Gagal Mendapatkan Kategori"));
+      categoryManager.saveCategory(null);
     } else {
       categoryManager.saveCategory(response);
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/category_controller.dart';
+import 'package:makassar_pet_clinic/main.dart';
 
 class CategoryList extends StatelessWidget {
   final int index;
@@ -52,8 +53,9 @@ class CategoryList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const InkWell(child: Icon(Icons.arrow_forward_ios, size: 15)),
-                const SizedBox(width: 8),
-                InkWell(
+                if (loginManager.role.value == "1") ...[
+                  const SizedBox(width: 8),
+                  InkWell(
                     onTap: () {
                       Get.defaultDialog(
                         title: 'Delete Category',
@@ -68,61 +70,63 @@ class CategoryList extends StatelessWidget {
                         },
                       );
                     },
-                    child: const Icon(Icons.delete, size: 15)),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () {
-                    // make bottom sheet for edit category
-                    nameController.text = categoryManager.category[index].name;
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SingleChildScrollView(
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(height: 10),
-                                Container(
-                                  width: 50,
-                                  height: 5,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: const Icon(Icons.delete, size: 15),
+                  ),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () {
+                      // make bottom sheet for edit category
+                      nameController.text = categoryManager.category[index].name;
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    width: 50,
+                                    height: 5,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text('Update Category', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    controller: nameController,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Category Name',
-                                      border: OutlineInputBorder(
-                                        borderRadius: borderRadiusPrimary,
+                                  const SizedBox(height: 10),
+                                  Text('Update Category', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextFormField(
+                                      controller: nameController,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Category Name',
+                                        border: OutlineInputBorder(
+                                          borderRadius: borderRadiusPrimary,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    categoryController.updateCategory(categoryManager.category[index].id, nameController.text);
-                                  },
-                                  child: Text('Update', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
-                                ),
-                              ],
+                                  const SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      categoryController.updateCategory(categoryManager.category[index].id, nameController.text);
+                                    },
+                                    child: Text('Update', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: const Icon(Icons.edit, size: 15),
-                ),
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(Icons.edit, size: 15),
+                  ),
+                ]
               ],
             ),
           ),

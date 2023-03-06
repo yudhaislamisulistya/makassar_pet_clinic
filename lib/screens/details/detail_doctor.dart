@@ -7,17 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 
 class DetailDoctor extends StatefulWidget {
-  DetailDoctor({super.key});
+  final int index;
+  final dynamic doctorManager;
+  final num rating;
+  DetailDoctor({super.key, this.doctorManager, required this.rating, required this.index});
 
   @override
   State<DetailDoctor> createState() => _DetailDoctorState();
 }
 
 class _DetailDoctorState extends State<DetailDoctor> {
+  final LoginManager loginManager = Get.find<LoginManager>();
   String selectedDate = "";
   @override
   void initState() {
@@ -118,9 +123,7 @@ class _DetailDoctorState extends State<DetailDoctor> {
                                                 child: IconButton(
                                                   onPressed: () async {
                                                     // Make API Whatsapp Send Message
-                                                    String message = "Halo, saya ingin bertanya tentang Konsultasi Dokter Hewan";
-                                                    String url = "https://wa.me/6285340472927?text=$message";
-                                                    Uri uri = Uri.parse(url);
+                                                    Get.showSnackbar(snackBarError("Anda Tidak Memiliki Akses"));
                                                   },
                                                   icon: Icon(
                                                     Icons.call,
@@ -178,7 +181,7 @@ class _DetailDoctorState extends State<DetailDoctor> {
                                   bottomRight: Radius.circular(30.0),
                                 ),
                                 image: DecorationImage(
-                                  image: AssetImage('assets/images/doctor1.jpeg'),
+                                  image: AssetImage(widget.doctorManager.doctor[widget.index].avatar!),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -190,7 +193,7 @@ class _DetailDoctorState extends State<DetailDoctor> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Dr. H. M. A. Rizal",
+                                  widget.doctorManager.doctor[widget.index].name!,
                                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: colorWhite, fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.left,
                                 ),
@@ -198,7 +201,7 @@ class _DetailDoctorState extends State<DetailDoctor> {
                                   height: 5,
                                 ),
                                 Text(
-                                  "Dokter Hewan",
+                                  widget.doctorManager.doctor[widget.index].specialization!,
                                   style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorWhite),
                                   textAlign: TextAlign.left,
                                 ),
@@ -229,7 +232,7 @@ class _DetailDoctorState extends State<DetailDoctor> {
                                     ),
                                     // Make Text Rating
                                     Text(
-                                      "4.5 Skor",
+                                      "${widget.rating} Skor",
                                       style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorWhite),
                                       textAlign: TextAlign.left,
                                     ),
@@ -272,14 +275,8 @@ class _DetailDoctorState extends State<DetailDoctor> {
                                   ),
                                   Text(
                                     '''
-Dr. H. M. A. Rizal adalah seorang dokter hewan spesialis yang memiliki pengalaman lebih dari 10 tahun di bidang kesehatan hewan. Beliau memiliki keahlian khusus dalam melakukan operasi hewan dan telah melayani ribuan pasien hewan di seluruh Indonesia.
-
-Dr. H. M. A. Rizal adalah lulusan Fakultas Kedokteran Hewan Universitas Gadjah Mada dan meraih gelar Master of Veterinary Science di Australia. Beliau juga memiliki sertifikat dari beberapa organisasi profesional, seperti Ikatan Dokter Hewan Indonesia (IDHI) dan World Small Animal Veterinary Association (WSAVA).
-
-Selain menjadi dokter hewan praktisi, Dr. H. M. A. Rizal juga aktif sebagai pembicara dalam seminar dan workshop tentang kesehatan hewan. Beliau juga menjadi anggota dari beberapa organisasi dan asosiasi profesional di bidang kesehatan hewan.
-
-Dengan pengalaman dan keahliannya yang luas, Dr. H. M. A. Rizal siap memberikan pelayanan terbaik untuk kesehatan hewan peliharaan Anda.
-''',
+${widget.doctorManager.doctor[widget.index].about!}
+                                    ''',
                                     textAlign: TextAlign.justify,
                                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorPrimaryDark),
                                   ),
@@ -342,7 +339,15 @@ Dengan pengalaman dan keahliannya yang luas, Dr. H. M. A. Rizal siap memberikan 
                           if (selectedDate.isEmpty) {
                             Get.showSnackbar(snackBarError("Silahkan pilih tanggal terlebih dahulu"));
                           } else {
-                            // Confirm Dialog
+                            if (DateFormat('dd MMMM yyyy').parse(selectedDate).isBefore(DateTime.now())) {
+                              Get.showSnackbar(snackBarError("Tanggal yang dipilih tidak boleh kurang dari hari ini"));
+                              return;
+                            }
+
+                            if (loginManager.role.value == "1" || loginManager.role.value == "1") {
+                              Get.showSnackbar(snackBarError("Maaf, Anda tidak memiliki akses untuk melakukan booking, Hanya User yang dapat melakukan booking"));
+                              return;
+                            }
                             Get.defaultDialog(
                               title: "Konfirmasi",
                               middleText: "Apakah Anda yakin ingin melakukan booking pada tanggal $selectedDate?",
@@ -352,7 +357,6 @@ Dengan pengalaman dan keahliannya yang luas, Dr. H. M. A. Rizal siap memberikan 
                               cancelTextColor: colorPrimary,
                               buttonColor: colorPrimary,
                               onConfirm: () {
-                                // Navigate to Booking Page
                                 Get.back();
                                 Get.showSnackbar(snackBarSuccess("Terima kasih telah melakukan booking, Silahkan tunggu konfirmasi dari dokter dan cek pada riwayat booking"));
                               },

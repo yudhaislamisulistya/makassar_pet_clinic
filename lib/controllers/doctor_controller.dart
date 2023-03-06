@@ -19,6 +19,7 @@ class DoctorController extends GetxController {
     final response = await doctorService.getDoctor();
     if (response == null) {
       Get.showSnackbar(snackBarError("Gagal Mendapatkan Dokter"));
+      doctorManager.saveDoctor(null);
     } else {
       doctorManager.saveDoctor(response);
     }

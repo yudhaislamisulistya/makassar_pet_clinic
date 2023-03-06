@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/controllers/login_controller.dart';
+import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:makassar_pet_clinic/screens/home.dart';
 
 class Login extends StatefulWidget {
@@ -13,6 +15,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool passenable = true;
+  final LoginController loginController = Get.put(LoginController());
+  final LoginManager loginManager = Get.put(LoginManager());
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -173,7 +177,14 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () async {
-                          Get.to(() => const Home());
+                          // Get To Remove Back Button
+                          // check username and password is empty
+                          if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+                            Get.showSnackbar(snackBarError("Username atau Password Tidak Boleh Kosong"));
+                            return;
+                          } else {
+                            await loginController.getUser(usernameController.text, passwordController.text);
+                          }
                         },
                         child: Text('Login', style: Theme.of(context).textTheme.labelLarge),
                       ),

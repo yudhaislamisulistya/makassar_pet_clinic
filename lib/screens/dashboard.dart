@@ -1,12 +1,13 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/category.dart';
-import 'package:makassar_pet_clinic/components/doctor.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
 import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
+import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
 import 'package:makassar_pet_clinic/screens/category.dart' as category_screen;
 import 'package:makassar_pet_clinic/screens/doctor.dart' as doctor_screen;
@@ -22,8 +23,10 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final DoctorController doctorController = Get.put(DoctorController());
   final DoctorManager doctorManager = Get.put(DoctorManager());
+  final LoginManager loginManager = Get.put(LoginManager());
   @override
   void initState() {
+    loginManager.setUser();
     super.initState();
     Future.delayed(Duration.zero, () {
       doctorManager.doctor.clear();
@@ -112,7 +115,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     // Make Text With Name
                     Text(
-                      'Yudha Islami Sulistya',
+                      loginManager.name.value,
                       style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -263,11 +266,22 @@ class _DashboardState extends State<Dashboard> {
                 child: Obx(
                   () {
                     if (doctorManager.isDoctorLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
                     } else if (doctorManager.isDoctorError.value) {
                       return const Center(child: Text('Error'));
                     } else if (doctorManager.isDoctorEmpty.value) {
-                      return const Center(child: Text('Empty'));
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          SvgPicture.asset('assets/svg/not_found.svg', width: 150),
+                          Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+                        ],
+                      );
                     } else if (doctorManager.isDoctorSuccess.value) {
                       return Transform.translate(
                         offset: Offset(0, Get.height * -0.04),
@@ -285,7 +299,12 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       );
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 50),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
                     }
                   },
                 ),

@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/cores/login_manager.dart';
+import 'package:makassar_pet_clinic/screens/login.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,6 +16,7 @@ class Profile extends StatefulWidget {
 }
 
 class AboutState extends State<Profile> {
+  final LoginManager loginManager = Get.put(LoginManager());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,13 +164,14 @@ class AboutState extends State<Profile> {
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
                     ),
                     ListInformasiLainnya(
-                      title: 'Terakhir Login',
-                      subtitle: "18 Maret 2023",
-                      icon: Icons.access_time,
-                    ),
-                    ListInformasiLainnya(
                       title: 'Akses',
-                      subtitle: "Admin",
+                      subtitle: loginManager.role.value == "1"
+                          ? "Admin"
+                          : loginManager.role.value == "2"
+                              ? "Expert"
+                              : loginManager.role.value == "3"
+                                  ? "User"
+                                  : "User",
                       icon: Icons.lock_clock_outlined,
                     ),
                     ListInformasiLainnya(
@@ -201,6 +205,8 @@ class AboutState extends State<Profile> {
                           buttonColor: colorPrimary,
                           barrierDismissible: false,
                           onConfirm: () {
+                            loginManager.logOut();
+                            Get.offAll(() => const Login());
                             Get.back();
                           },
                         );
@@ -292,7 +298,7 @@ class ListInformasiLainnya extends StatelessWidget {
         ),
         subtitle: Text(
           subtitle ?? '-',
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black),
         ),
       ),
     );
