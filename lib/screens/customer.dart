@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
+import 'package:makassar_pet_clinic/components/customer.dart' as customer_component;
 import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
-import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
+import 'package:makassar_pet_clinic/controllers/user_controller.dart';
 import 'package:makassar_pet_clinic/cores/customer_manager.dart';
-import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
 class Customer extends StatefulWidget {
@@ -20,15 +20,18 @@ class _CustomerState extends State<Customer> {
   final CustomerController customerController = Get.put(CustomerController());
   final CustomerManager customerManager = Get.put(CustomerManager());
   final LoginManager loginManager = Get.put(LoginManager());
+  final UserController userController = Get.put(UserController());
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController specializationController = TextEditingController();
-  TextEditingController experienceYearsController = TextEditingController();
-  TextEditingController aboutController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  String? selectedAvatar = "Avatar 1";
+  TextEditingController nameCustomerController = TextEditingController();
+  TextEditingController emailCustomerController = TextEditingController();
+  TextEditingController addressCustomerController = TextEditingController();
+  TextEditingController phoneCustomerController = TextEditingController();
+  TextEditingController petTypeCustomerController = TextEditingController();
+  TextEditingController petNameCustomerController = TextEditingController();
+  TextEditingController petAgeCustomerController = TextEditingController();
+  TextEditingController petGenderCustomerController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -87,14 +90,14 @@ class _CustomerState extends State<Customer> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text('Add Doctor', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
+                              Text('Add Customer', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
                               const SizedBox(height: 10),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
-                                  controller: nameController,
+                                  controller: nameCustomerController,
                                   decoration: InputDecoration(
-                                    hintText: 'Doctor Name',
+                                    hintText: 'Customer Name Name',
                                     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                     hintStyle: const TextStyle(fontSize: 14),
                                     border: OutlineInputBorder(
@@ -108,7 +111,7 @@ class _CustomerState extends State<Customer> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
                                   keyboardType: TextInputType.emailAddress,
-                                  controller: emailController,
+                                  controller: emailCustomerController,
                                   decoration: InputDecoration(
                                     hintText: 'Email',
                                     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -119,58 +122,11 @@ class _CustomerState extends State<Customer> {
                                   ),
                                 ),
                               ),
-                              // Specialization
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  controller: specializationController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Specialization',
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                    hintStyle: const TextStyle(fontSize: 14),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // Experience Years
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  controller: experienceYearsController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Experience Years',
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                    hintStyle: const TextStyle(fontSize: 14),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // About
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  controller: aboutController,
-                                  decoration: InputDecoration(
-                                    hintText: 'About',
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                    hintStyle: const TextStyle(fontSize: 14),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // Phone
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
                                   keyboardType: TextInputType.phone,
-                                  controller: phoneController,
+                                  controller: phoneCustomerController,
                                   decoration: InputDecoration(
                                     hintText: 'Phone',
                                     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -181,43 +137,101 @@ class _CustomerState extends State<Customer> {
                                   ),
                                 ),
                               ),
-                              // Avatar
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: DropdownButtonFormField<String>(
-                                  value: selectedAvatar, // nilai awal dropdown
+                                child: TextField(
+                                  controller: addressCustomerController,
                                   decoration: InputDecoration(
-                                    hintText: 'Avatar',
+                                    hintText: 'Address',
                                     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                     hintStyle: const TextStyle(fontSize: 14),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  items: <String>[
-                                    'Avatar 1',
-                                    'Avatar 2',
-                                    'Avatar 3',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedAvatar = newValue!;
-                                    });
-                                  },
                                 ),
                               ),
-                              // Address
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
-                                  controller: addressController,
+                                  controller: petTypeCustomerController,
                                   decoration: InputDecoration(
-                                    hintText: 'Address',
+                                    hintText: 'Pet Type',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: petNameCustomerController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Pet Name',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: petAgeCustomerController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Pet Age',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: petGenderCustomerController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Pet Gender',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Divider(
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: usernameController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Username',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  obscureText: true,
+                                  controller: passwordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Password',
                                     contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                     hintStyle: const TextStyle(fontSize: 14),
                                     border: OutlineInputBorder(
@@ -229,40 +243,52 @@ class _CustomerState extends State<Customer> {
                               const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  if (nameController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Doctor Name is required');
-                                  } else if (emailController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Email is required');
-                                  } else if (specializationController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Specialization is required');
-                                  } else if (experienceYearsController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Experience Years is required');
-                                  } else if (aboutController.text.isEmpty) {
-                                    Get.snackbar('Error', 'About is required');
-                                  } else if (phoneController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Phone is required');
-                                  } else if (addressController.text.isEmpty) {
-                                    Get.snackbar('Error', 'Address is required');
+                                  if (nameCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Nama tidak boleh kosong'));
+                                  } else if (emailCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Email tidak boleh kosong'));
+                                  } else if (addressCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Alamat tidak boleh kosong'));
+                                  } else if (phoneCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Nomor Telepon tidak boleh kosong'));
+                                  } else if (petTypeCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Jenis Hewan tidak boleh kosong'));
+                                  } else if (petNameCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Nama Hewan tidak boleh kosong'));
+                                  } else if (petAgeCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Umur Hewan tidak boleh kosong'));
+                                  } else if (petGenderCustomerController.text.isEmpty) {
+                                    Get.showSnackbar(snackBarError('Jenis Kelamin Hewan tidak boleh kosong'));
                                   } else {
-                                    // await doctorController.addDoctor(
-                                    //   nameController.text,
-                                    //   emailController.text,
-                                    //   specializationController.text,
-                                    //   int.parse(experienceYearsController.text),
-                                    //   aboutController.text,
-                                    //   phoneController.text,
-                                    //   selectedAvatar!,
-                                    //   addressController.text,
-                                    // );
+                                    await customerController.addCustomer(
+                                      nameCustomerController.text,
+                                      emailCustomerController.text,
+                                      addressCustomerController.text,
+                                      phoneCustomerController.text,
+                                      petTypeCustomerController.text,
+                                      petNameCustomerController.text,
+                                      petAgeCustomerController.text,
+                                      petGenderCustomerController.text,
+                                    );
 
-                                    // // Clear input controller
-                                    // nameController.clear();
-                                    // emailController.clear();
-                                    // specializationController.clear();
-                                    // experienceYearsController.clear();
-                                    // aboutController.clear();
-                                    // phoneController.clear();
-                                    // addressController.clear();
+                                    await userController.addUser(
+                                      nameCustomerController.text,
+                                      usernameController.text,
+                                      passwordController.text,
+                                      '3',
+                                    );
+
+                                    // Clear input controller
+                                    nameCustomerController.clear();
+                                    emailCustomerController.clear();
+                                    addressCustomerController.clear();
+                                    phoneCustomerController.clear();
+                                    petTypeCustomerController.clear();
+                                    petNameCustomerController.clear();
+                                    petAgeCustomerController.clear();
+                                    petGenderCustomerController.clear();
+                                    usernameController.clear();
+                                    passwordController.clear();
                                   }
                                 },
                                 child: Text('Save', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
@@ -307,12 +333,11 @@ class _CustomerState extends State<Customer> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: customerManager.customer.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ListTile(title: Text("Selamat Datang"));
-                        // return doctor_component.Doctor(
-                        //   index: index,
-                        //   customerManager: customerManager,
-                        //   rating: 2,
-                        // );
+                        return customer_component.Customer(
+                          index: index,
+                          doctorManager: customerManager,
+                          rating: 2,
+                        );
                       },
                     );
                   } else {

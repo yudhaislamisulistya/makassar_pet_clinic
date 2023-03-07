@@ -6,8 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
+import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
-import 'package:makassar_pet_clinic/screens/login.dart';
 
 class ChangeProfile extends StatefulWidget {
   const ChangeProfile({super.key});
@@ -19,9 +19,11 @@ class ChangeProfile extends StatefulWidget {
 class ChangeProfileState extends State<ChangeProfile> {
   final LoginManager loginManager = Get.put(LoginManager());
   final CustomerController customerController = Get.put(CustomerController());
+  final DoctorController doctorController = Get.put(DoctorController());
   late String name = '';
   late String email = '';
   late String avatar = 'assets/images/person.png';
+  String? selectedAvatar = "Avatar 1";
 
   TextEditingController nameCustomerController = TextEditingController();
   TextEditingController emailCustomerControllerCustomer = TextEditingController();
@@ -31,6 +33,14 @@ class ChangeProfileState extends State<ChangeProfile> {
   TextEditingController petNameCustomerController = TextEditingController();
   TextEditingController petAgeCustomerController = TextEditingController();
   TextEditingController petGenderCustomerController = TextEditingController();
+
+  TextEditingController nameDoctorController = TextEditingController();
+  TextEditingController emailDoctorController = TextEditingController();
+  TextEditingController addressDoctorController = TextEditingController();
+  TextEditingController phoneDoctorController = TextEditingController();
+  TextEditingController specializationDoctorController = TextEditingController();
+  TextEditingController experienceDoctorController = TextEditingController();
+  TextEditingController aboutDoctorController = TextEditingController();
 
   @override
   void initState() {
@@ -184,55 +194,114 @@ class ChangeProfileState extends State<ChangeProfile> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // make change name customer with padding
-                    InputTextField(
-                      controller: nameCustomerController,
-                      hintText: 'Masukkan Nama',
-                      value: loginManager.nameCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: emailCustomerControllerCustomer,
-                      hintText: 'Masukkan Email',
-                      value: loginManager.emailCustomer.value,
-                      disabledInput: false,
-                    ),
-                    InputTextField(
-                      controller: addressCustomerController,
-                      hintText: 'Masukkan Alamat',
-                      value: loginManager.addressCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: phoneCustomerController,
-                      hintText: 'Masukkan Nomor Telepon',
-                      value: loginManager.phoneCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petTypeCustomerController,
-                      hintText: 'Masukkan Jenis Hewan',
-                      value: loginManager.petType.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petNameCustomerController,
-                      hintText: 'Masukkan Nama Hewan',
-                      value: loginManager.petName.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petAgeCustomerController,
-                      hintText: 'Masukkan Umur Hewan',
-                      value: loginManager.petAge.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petGenderCustomerController,
-                      hintText: 'Masukkan Jenis Kelamin Hewan',
-                      value: loginManager.petGender.value,
-                      disabledInput: true,
-                    ),
+                    if (loginManager.role.value == "3") ...[
+                      InputTextField(
+                        controller: nameCustomerController,
+                        hintText: 'Masukkan Nama',
+                        value: loginManager.nameCustomer.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: emailCustomerControllerCustomer,
+                        hintText: 'Masukkan Email',
+                        value: loginManager.emailCustomer.value,
+                        disabledInput: false,
+                      ),
+                      InputTextField(
+                        controller: addressCustomerController,
+                        hintText: 'Masukkan Alamat',
+                        value: loginManager.addressCustomer.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: phoneCustomerController,
+                        hintText: 'Masukkan Nomor Telepon',
+                        value: loginManager.phoneCustomer.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: petTypeCustomerController,
+                        hintText: 'Masukkan Jenis Hewan',
+                        value: loginManager.petType.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: petNameCustomerController,
+                        hintText: 'Masukkan Nama Hewan',
+                        value: loginManager.petName.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: petAgeCustomerController,
+                        hintText: 'Masukkan Umur Hewan',
+                        value: loginManager.petAge.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: petGenderCustomerController,
+                        hintText: 'Masukkan Jenis Kelamin Hewan',
+                        value: loginManager.petGender.value,
+                        disabledInput: true,
+                      ),
+                    ] else if (loginManager.role.value == "2") ...[
+                      InputTextField(
+                        controller: nameDoctorController,
+                        hintText: 'Masukkan Nama',
+                        value: loginManager.nameDoctor.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: emailDoctorController,
+                        hintText: 'Masukkan Email',
+                        value: loginManager.emailDoctor.value,
+                        disabledInput: false,
+                      ),
+                      InputTextField(
+                        controller: addressDoctorController,
+                        hintText: 'Masukkan Alamat',
+                        value: loginManager.addressDoctor.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: phoneDoctorController,
+                        hintText: 'Masukkan Nomor Telepon',
+                        value: loginManager.phoneDoctor.value,
+                        disabledInput: true,
+                      ),
+                      InputTextField(
+                        controller: specializationDoctorController,
+                        hintText: 'Masukkan Spesialisasi',
+                        value: loginManager.specializationDoctor.value,
+                        disabledInput: true,
+                      ),
+                      DropdownButtonFormField<String>(
+                        value: selectedAvatar, // nilai awal dropdown
+                        decoration: InputDecoration(
+                          hintText: 'Avatar',
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          hintStyle: const TextStyle(fontSize: 14),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        items: <String>[
+                          'Avatar 1',
+                          'Avatar 2',
+                          'Avatar 3',
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedAvatar = newValue!;
+                          });
+                        },
+                      ),
+                    ],
+
                     const SizedBox(
                       height: 20,
                     ),
@@ -242,33 +311,59 @@ class ChangeProfileState extends State<ChangeProfile> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (nameCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nama tidak boleh kosong'));
-                          } else if (emailCustomerControllerCustomer.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Email tidak boleh kosong'));
-                          } else if (addressCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Alamat tidak boleh kosong'));
-                          } else if (phoneCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nomor Telepon tidak boleh kosong'));
-                          } else if (petTypeCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Jenis Hewan tidak boleh kosong'));
-                          } else if (petNameCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nama Hewan tidak boleh kosong'));
-                          } else if (petAgeCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Umur Hewan tidak boleh kosong'));
-                          } else if (petGenderCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Jenis Kelamin Hewan tidak boleh kosong'));
-                          } else {
-                            customerController.updateCustomer(
-                              int.parse(loginManager.idCustomer.value),
-                              nameCustomerController.text,
-                              addressCustomerController.text,
-                              phoneCustomerController.text,
-                              petTypeCustomerController.text,
-                              petNameCustomerController.text,
-                              petAgeCustomerController.text,
-                              petGenderCustomerController.text,
-                            );
+                          if (loginManager.role.value == "3") {
+                            if (nameCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Nama tidak boleh kosong'));
+                            } else if (emailCustomerControllerCustomer.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Email tidak boleh kosong'));
+                            } else if (addressCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Alamat tidak boleh kosong'));
+                            } else if (phoneCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Nomor Telepon tidak boleh kosong'));
+                            } else if (petTypeCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Jenis Hewan tidak boleh kosong'));
+                            } else if (petNameCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Nama Hewan tidak boleh kosong'));
+                            } else if (petAgeCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Umur Hewan tidak boleh kosong'));
+                            } else if (petGenderCustomerController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Jenis Kelamin Hewan tidak boleh kosong'));
+                            } else {
+                              customerController.updateCustomer(
+                                int.parse(loginManager.idCustomer.value),
+                                nameCustomerController.text,
+                                addressCustomerController.text,
+                                phoneCustomerController.text,
+                                petTypeCustomerController.text,
+                                petNameCustomerController.text,
+                                petAgeCustomerController.text,
+                                petGenderCustomerController.text,
+                              );
+                            }
+                          } else if (loginManager.role.value == "2") {
+                            if (nameDoctorController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Nama tidak boleh kosong'));
+                            } else if (emailDoctorController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Email tidak boleh kosong'));
+                            } else if (addressDoctorController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Alamat tidak boleh kosong'));
+                            } else if (phoneDoctorController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Nomor Telepon tidak boleh kosong'));
+                            } else if (specializationDoctorController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError('Spesialisasi tidak boleh kosong'));
+                            } else {
+                              doctorController.updateDoctor(
+                                int.parse(loginManager.idExpert.value),
+                                nameDoctorController.text,
+                                emailDoctorController.text,
+                                specializationDoctorController.text,
+                                experienceDoctorController.text,
+                                aboutDoctorController.text,
+                                phoneDoctorController.text,
+                                selectedAvatar!,
+                                addressDoctorController.text,
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

@@ -10,6 +10,7 @@ class UserRequestModel {
     this.name,
     this.username,
     this.password,
+    this.role,
   });
 
   Map<String, dynamic> toJson() {
@@ -18,6 +19,7 @@ class UserRequestModel {
       'name': name,
       'username': username,
       'password': password,
+      'role': role,
     };
     return map;
   }

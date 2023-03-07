@@ -1,15 +1,17 @@
 class UserModel {
   final int id;
   final String name;
-  final String description;
-  final String avatar;
+  final String username;
+  final String password;
+  final String role;
   final String createdAt;
 
   UserModel({
     required this.id,
     required this.name,
-    required this.description,
-    required this.avatar,
+    required this.username,
+    required this.password,
+    required this.role,
     required this.createdAt,
   });
 
@@ -17,8 +19,9 @@ class UserModel {
     return UserModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      description: json['description'] as String,
-      avatar: json['avatar'] as String,
+      username: json['username'] as String,
+      password: json['password'] as String,
+      role: json['role'] as String,
       createdAt: json['created_at'] as String,
     );
   }

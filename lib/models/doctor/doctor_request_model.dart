@@ -1,5 +1,6 @@
 class DoctorRequestModel {
   int? id;
+  int? idExpert;
   String? name;
   String? email;
   String? specialization;
@@ -12,6 +13,7 @@ class DoctorRequestModel {
 
   DoctorRequestModel({
     this.id,
+    this.idExpert,
     this.name,
     this.email,
     this.specialization,
@@ -26,6 +28,7 @@ class DoctorRequestModel {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
       'id': id,
+      'id_expert': idExpert,
       'name': name,
       'email': email,
       'specialization': specialization,

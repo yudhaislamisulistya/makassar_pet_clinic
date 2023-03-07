@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
 import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
+import 'package:makassar_pet_clinic/controllers/user_controller.dart';
 import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
@@ -18,6 +19,7 @@ class _DoctorState extends State<Doctor> {
   final DoctorController doctorController = Get.put(DoctorController());
   final DoctorManager doctorManager = Get.put(DoctorManager());
   final LoginManager loginManager = Get.put(LoginManager());
+  final UserController userController = Get.put(UserController());
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -26,6 +28,8 @@ class _DoctorState extends State<Doctor> {
   TextEditingController aboutController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   String? selectedAvatar = "Avatar 1";
 
   @override
@@ -224,6 +228,39 @@ class _DoctorState extends State<Doctor> {
                                   ),
                                 ),
                               ),
+                              const Divider(
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: usernameController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Username',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  obscureText: true,
+                                  controller: passwordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Password',
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    hintStyle: const TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () async {
@@ -241,6 +278,10 @@ class _DoctorState extends State<Doctor> {
                                     Get.snackbar('Error', 'Phone is required');
                                   } else if (addressController.text.isEmpty) {
                                     Get.snackbar('Error', 'Address is required');
+                                  } else if (usernameController.text.isEmpty) {
+                                    Get.snackbar('Error', 'Username is required');
+                                  } else if (passwordController.text.isEmpty) {
+                                    Get.snackbar('Error', 'Password is required');
                                   } else {
                                     await doctorController.addDoctor(
                                       nameController.text,
@@ -253,7 +294,13 @@ class _DoctorState extends State<Doctor> {
                                       addressController.text,
                                     );
 
-                                    // Clear input controller
+                                    await userController.addUser(
+                                      nameController.text,
+                                      usernameController.text,
+                                      passwordController.text,
+                                      '2',
+                                    );
+
                                     nameController.clear();
                                     emailController.clear();
                                     specializationController.clear();

@@ -4,7 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makassar_pet_clinic/bindings/app_bindings.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
-import 'package:makassar_pet_clinic/screens/home.dart';
+import 'package:makassar_pet_clinic/screens/home_admin.dart';
+import 'package:makassar_pet_clinic/screens/home_customer_expert.dart';
 import 'package:makassar_pet_clinic/screens/login.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,7 +38,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorPrimarySwatch,
       ),
       darkTheme: Get.isDarkMode ? ThemeData.dark() : ThemeData.light(),
-      home: loginManager.isAuthenticated.value ? const Home() : const Login(),
+      home: loginManager.isAuthenticated.value
+          ? loginManager.role.value == "1"
+              ? const HomeAdmin()
+              : const HomeCustomerExpert()
+          : const Login(),
     );
   }
 }

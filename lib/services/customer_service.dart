@@ -17,13 +17,30 @@ class CustomerService extends GetConnect {
   }
 
   Future<CustomerResponseModel?> getCustomerByIdUser(int idUser) async {
-    // Get Customer by idUser
     final response = await supabase.from('customers').select().eq('id_user', idUser);
 
     if (response.isEmpty) {
       return null;
     } else {
       return CustomerResponseModel.fromJson(response);
+    }
+  }
+
+  Future<bool?> addCustomer(CustomerRequestModel? data) async {
+    try {
+      await supabase.from('customers').insert({
+        'name': data!.name,
+        'email': data.email,
+        'phone': data.phone,
+        'address': data.address,
+        'pet_type': data.petType,
+        'pet_name': data.petName,
+        'pet_age': data.petAge,
+        'pet_gender': data.petGender,
+      });
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

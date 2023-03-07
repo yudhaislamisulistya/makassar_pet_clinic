@@ -35,6 +35,25 @@ class CustomerController extends GetxController {
     }
   }
 
+  Future<void> addCustomer(String name, String email, String phone, String address, String petType, String petName, String petAge, String petGender) async {
+    final response = await customerService.addCustomer(
+      CustomerRequestModel(
+        name: name,
+        phone: phone,
+        address: address,
+        petType: petType,
+        petName: petName,
+        petAge: petAge,
+        petGender: petGender,
+      ),
+    );
+    if (response != null) {
+      Get.showSnackbar(snackBarSuccess("Berhasil Menambahkan Customer"));
+    } else {
+      Get.showSnackbar(snackBarError("Gagal Menambahkan Customer"));
+    }
+  }
+
   Future<void> updateCustomer(int id, String name, String phone, String address, String petType, String petName, String petAge, String petGender) async {
     final response = await customerService.updateCustomer(CustomerRequestModel(
       id: id,

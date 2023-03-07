@@ -15,6 +15,24 @@ class UserController extends GetxController {
     super.onInit();
   }
 
+  Future<void> deleteUser(int id) async {
+    final response = await userService.deleteUser(id);
+    if (response != null) {
+      Get.showSnackbar(snackBarSuccess("Berhasil Menghapus User"));
+    } else {
+      Get.showSnackbar(snackBarError("Gagal Menghapus User"));
+    }
+  }
+
+  Future<void> addUser(String name, String username, String password, String role) async {
+    final response = await userService.addUser(UserRequestModel(name: name, username: username, password: password, role: role));
+    if (response != null) {
+      Get.showSnackbar(snackBarSuccess("Berhasil Menambahkan User"));
+    } else {
+      Get.showSnackbar(snackBarError("Gagal Menambahkan User"));
+    }
+  }
+
   Future<void> updatePassword(int id, String password) async {
     final response = await userService.updatePassword(UserRequestModel(id: id, password: password));
     if (response != null) {

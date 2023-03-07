@@ -44,6 +44,7 @@ class LoginManager extends GetxController with CacheManager {
     final username = getUsername();
     if (username != null) {
       isAuthenticated.value = true;
+      setUser();
     }
   }
 

@@ -7,7 +7,8 @@ import 'package:makassar_pet_clinic/cores/customer_manager.dart';
 import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:makassar_pet_clinic/models/login/login_request_model.dart';
-import 'package:makassar_pet_clinic/screens/home.dart';
+import 'package:makassar_pet_clinic/screens/home_admin.dart';
+import 'package:makassar_pet_clinic/screens/home_customer_expert.dart';
 import 'package:makassar_pet_clinic/services/login_service.dart';
 
 class LoginController extends GetxController {
@@ -91,7 +92,13 @@ class LoginController extends GetxController {
       }
 
       loginManager.logIn(user['username'], user);
-      Get.offAll(() => const Home());
+      if (user['role'] == "3") {
+        Get.offAll(() => const HomeCustomerExpert());
+      } else if (user['role'] == "2") {
+        Get.offAll(() => const HomeCustomerExpert());
+      } else if (user['role'] == "1") {
+        Get.offAll(() => const HomeAdmin());
+      }
     }
   }
 }
