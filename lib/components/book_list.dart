@@ -14,7 +14,8 @@ class BookList extends StatefulWidget {
   String? name;
   String? dateBook;
   String? status;
-  BookList({super.key, this.id, this.idUser, this.idExpert, this.name, this.dateBook, this.status});
+  dynamic bookManager;
+  BookList({super.key, this.id, this.idUser, this.idExpert, this.name, this.dateBook, this.status, this.bookManager});
 
   @override
   State<BookList> createState() => _BookListState();
@@ -123,6 +124,12 @@ class _BookListState extends State<BookList> {
                   children: [
                     Text(widget.dateBook ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
                     Text(widget.status ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorStatus)),
+                    if (loginManager.role.value == "2") ...[
+                      Text(widget.bookManager.customers.petType ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
+                      Text(widget.bookManager.customers.petName ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
+                      Text(widget.bookManager.customers.petAge ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
+                      Text(widget.bookManager.customers.petGender ?? '-', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorGrayDark)),
+                    ],
                     if (widget.status == "Success") ...[
                       if (loginManager.role.value == "3") ...[
                         Text("Silahkan Konsultasi", style: Theme.of(context).textTheme.bodySmall!.copyWith(color: colorPrimary)),

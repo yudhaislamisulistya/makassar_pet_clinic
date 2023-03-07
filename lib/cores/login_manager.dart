@@ -5,8 +5,6 @@ import 'package:makassar_pet_clinic/cores/cache_manager.dart';
 
 class LoginManager extends GetxController with CacheManager {
   final isAuthenticated = false.obs;
-  final isIntroductionStep = false.obs;
-  final isShowcaseCompleted = false.obs;
   final id = ''.obs;
   final name = ''.obs;
   final username = ''.obs;

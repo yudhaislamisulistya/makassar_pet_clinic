@@ -15,9 +15,10 @@ class ChatController extends GetxController {
     super.onInit();
   }
 
-  Future<void> getChatByIdUserAndIdExpert(int idUser, int idExpoert) async {
-    final response = await chatService.getChatByIdUserAndIdExpert(ChatRequestModel(idUser: idUser, idExpert: idExpoert));
-    print(response);
+  Future<void> getChatByIdUserAndIdExpert(int idUser, int idExpert) async {
+    final response = await chatService.getChatByIdUserAndIdExpert(ChatRequestModel(idUser: idUser, idExpert: idExpert));
+    print("Ini Adalah ID User $idUser");
+    print("Ini Adalah ID Expert $idExpert");
     if (response == null) {
       Get.showSnackbar(snackBarError("Gagal Mendapatkan Data Informasi Chat"));
       chatManager.saveChat(null);

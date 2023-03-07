@@ -28,6 +28,8 @@ class _DashboardState extends State<Dashboard> {
   final CategoryController categoryController = Get.put(CategoryController());
   final CategoryManager categoryManager = Get.put(CategoryManager());
   final LoginManager loginManager = Get.put(LoginManager());
+
+  late String avatar = 'assets/images/person.png';
   @override
   void initState() {
     doctorManager.doctor.clear();
@@ -53,6 +55,12 @@ class _DashboardState extends State<Dashboard> {
       greeting = 'Good Afternoon';
     } else {
       greeting = 'Good Evening';
+    }
+
+    if (loginManager.role.value == "3") {
+      avatar = "assets/images/person.png";
+    } else if (loginManager.role.value == "2") {
+      avatar = loginManager.avatarDoctor.value;
     }
 
     return Placeholder(
@@ -94,11 +102,11 @@ class _DashboardState extends State<Dashboard> {
                     Container(
                       height: 50,
                       width: 50,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: colorPrimary,
                         borderRadius: borderRadiusRectangle,
                         image: DecorationImage(
-                          image: AssetImage('assets/images/profile.jpg'),
+                          image: AssetImage(avatar),
                           fit: BoxFit.cover,
                         ),
                       ),

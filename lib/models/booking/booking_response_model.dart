@@ -1,3 +1,4 @@
+import 'package:makassar_pet_clinic/models/customer/customer_response_model.dart';
 import 'package:makassar_pet_clinic/models/doctor/doctor_response_model.dart';
 
 class BookingModel {
@@ -9,6 +10,7 @@ class BookingModel {
   final String dateBook;
   final String createdAt;
   DoctorModel? experts;
+  CustomerModel? customers;
 
   BookingModel({
     required this.id,
@@ -35,6 +37,10 @@ class BookingModel {
   void setExperts(DoctorModel? experts) {
     this.experts = experts;
   }
+
+  void setCustomers(CustomerModel? customers) {
+    this.customers = customers;
+  }
 }
 
 class BookingResponseModel {
@@ -42,12 +48,14 @@ class BookingResponseModel {
 
   BookingResponseModel({required this.bookings});
 
-  factory BookingResponseModel.fromJson(List<dynamic> json, List<DoctorModel> doctors) {
+  factory BookingResponseModel.fromJson(List<dynamic> json, List<DoctorModel> doctors, List<CustomerModel> customers) {
     List<BookingModel> bookings = [];
     bookings = json.map((booking) => BookingModel.fromJson(booking)).toList();
     for (BookingModel booking in bookings) {
       DoctorModel expert = doctors.firstWhere((doc) => doc.id == booking.idExpert);
+      CustomerModel customer = customers.firstWhere((cus) => cus.id == booking.idUser);
       booking.setExperts(expert);
+      booking.setCustomers(customer);
     }
     return BookingResponseModel(bookings: bookings);
   }

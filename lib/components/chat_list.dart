@@ -11,12 +11,15 @@ import 'package:intl/intl.dart';
 
 class ChatList extends StatefulWidget {
   int? id;
+  int? idUser;
+  int? idExpert;
   String? image;
   String? name;
   String? lastMessage;
   String? lastMessageTime;
+  dynamic bookManager;
 
-  ChatList({super.key, this.id, this.image, this.name, this.lastMessage, this.lastMessageTime});
+  ChatList({super.key, this.id, this.idUser, this.idExpert, this.image, this.name, this.lastMessage, this.lastMessageTime, this.bookManager});
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -44,12 +47,11 @@ class _ChatListState extends State<ChatList> {
     await Future.delayed(Duration.zero, () async {
       if (loginManager.role.value == "3") {
         idCustomer = int.parse(loginManager.idCustomer.value);
+        await chatController.getChatByIdUserAndIdExpert(idCustomer, widget.idExpert!);
       } else if (loginManager.role.value == "2") {
         idCustomer = int.parse(loginManager.idExpert.value);
+        await chatController.getChatByIdUserAndIdExpert(widget.idUser!, idCustomer);
       }
-      print("idCustomer: $idCustomer");
-      print("idExpert: ${widget.id}");
-      await chatController.getChatByIdUserAndIdExpert(idCustomer, widget.id!);
     });
     setState(() {
       lastMessage = chatManager.chat.isNotEmpty ? chatManager.chat.last.message ?? "" : "";
@@ -75,6 +77,8 @@ class _ChatListState extends State<ChatList> {
           onTap: () {
             Get.to(() => DetailChat(
                   id: widget.id!,
+                  idUser: widget.idUser!,
+                  idExpert: widget.idExpert!,
                   title: widget.name!,
                 ));
           },

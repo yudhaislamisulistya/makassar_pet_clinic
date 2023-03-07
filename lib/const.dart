@@ -16,6 +16,7 @@ const Color colorGrayDark = Color(0xFF9E9E9E);
 const Color colorGrayLight = Color(0xFFFAFAFA);
 const Color colorSuccess = Color(0xFF4CAF50);
 const Color colorError = Color(0xFFD32F2F);
+const Color colorDark = Color.fromARGB(255, 26, 22, 22);
 
 // GetSnackBar snackBarSecondary With Parameter
 GetSnackBar snackBarSecondary(String message) {

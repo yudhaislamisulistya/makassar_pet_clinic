@@ -6,19 +6,32 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
+import 'package:makassar_pet_clinic/screens/change_profile.dart';
 import 'package:makassar_pet_clinic/screens/login.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
-  State<Profile> createState() => AboutState();
+  State<Profile> createState() => ProfileState();
 }
 
-class AboutState extends State<Profile> {
+class ProfileState extends State<Profile> {
   final LoginManager loginManager = Get.put(LoginManager());
+  late String name = '';
+  late String email = '';
+  late String avatar = 'assets/images/person.png';
   @override
   Widget build(BuildContext context) {
+    if (loginManager.role.value == "3") {
+      name = loginManager.nameCustomer.value;
+      email = loginManager.emailCustomer.value;
+      avatar = 'assets/images/person.png';
+    } else if (loginManager.role.value == "2") {
+      name = loginManager.nameDoctor.value;
+      email = loginManager.emailDoctor.value;
+      avatar = loginManager.avatarDoctor.value;
+    }
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(),
@@ -34,89 +47,103 @@ class AboutState extends State<Profile> {
         child: SafeArea(
           child: Column(
             children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(25.0),
-                      bottomRight: Radius.circular(25.0),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Container(
-                      width: Get.width,
-                      color: colorPrimary,
-                      child: SvgPicture.asset(
-                        'assets/svg/header_two.svg',
-                        width: Get.width,
-                        height: Get.height * 0.2,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    height: Get.height * 0.2,
-                    width: Get.width,
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          colorPrimary,
-                          colorPrimaryLight,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25.0),
-                        bottomRight: Radius.circular(25.0),
-                      ),
-                    ),
-                    child: Column(
+              Obx(
+                () {
+                  if (loginManager.isAuthenticated.value) {
+                    return Stack(
                       children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(3), // Border radius
-                            child: ClipOval(
-                              child: Image.asset(
-                                "assets/images/doctor1.jpeg",
-                                fit: BoxFit.scaleDown,
-                              ),
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(25.0),
+                            bottomRight: Radius.circular(25.0),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Container(
+                            width: Get.width,
+                            color: colorPrimary,
+                            child: SvgPicture.asset(
+                              'assets/svg/header_two.svg',
+                              width: Get.width,
+                              height: Get.height * 0.2,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "M. Kamil",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          height: Get.height * 0.2,
+                          width: Get.width,
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                colorPrimary,
+                                colorPrimaryLight,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(25.0),
+                              bottomRight: Radius.circular(25.0),
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          "mkamil@gmail.com@gmail.com",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(3), // Border radius
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      avatar,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                email,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        SizedBox(height: MediaQuery.of(context).size.height / 4),
+                        const Center(child: CircularProgressIndicator()),
+                      ],
+                    );
+                  }
+                },
               ),
+
               const SizedBox(
                 height: 20,
               ),
@@ -132,25 +159,25 @@ class AboutState extends State<Profile> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.dialog(
-                          AlertDialog(
-                            title: const Text('Dark Mode'),
-                            content: const Text('Apakah anda ingin mengaktifkan dark mode?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('Tidak'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('Ya'),
-                              ),
-                            ],
-                          ),
+                        Get.to(() => const ChangeProfile());
+                      },
+                      child: ListInformasiLainnya(
+                        title: 'Update Profile',
+                        subtitle: "Tap",
+                        icon: Icons.change_circle,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.defaultDialog(
+                          title: 'Dark Mode',
+                          middleText: 'Are you sure want to change dark mode?',
+                          textConfirm: 'Yes',
+                          textCancel: 'No',
+                          confirmTextColor: Colors.white,
+                          cancelTextColor: colorDark,
+                          buttonColor: colorDark,
+                          onConfirm: () {},
                         );
                       },
                       child: ListInformasiLainnya(

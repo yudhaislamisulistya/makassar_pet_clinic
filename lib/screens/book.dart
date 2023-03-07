@@ -111,6 +111,7 @@ class _BookState extends State<Book> {
                           name: name,
                           dateBook: bookingManager.booking[index].dateBook,
                           status: status,
+                          bookManager: bookingManager.booking[index],
                         );
                       },
                     );

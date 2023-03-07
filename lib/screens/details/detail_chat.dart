@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison
+// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, invalid_use_of_protected_member
 
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
@@ -14,8 +14,10 @@ import 'package:makassar_pet_clinic/cores/rating_manager.dart';
 
 class DetailChat extends StatefulWidget {
   final int id;
+  final int idUser;
+  final int idExpert;
   final String title;
-  const DetailChat({Key? key, required this.id, required this.title}) : super(key: key);
+  const DetailChat({Key? key, required this.id, required this.idUser, required this.idExpert, required this.title}) : super(key: key);
 
   @override
   _DetailChatState createState() => _DetailChatState();
@@ -35,65 +37,72 @@ class _DetailChatState extends State<DetailChat> {
   bool isPlaying = false;
   bool isLoading = false;
   bool isPause = false;
+  late int idCustomer;
 
   @override
   void initState() {
     chatManager.chat.clear();
     ratingManager.rating.clear();
     super.initState();
-    Future.delayed(Duration.zero, () {
-      chatController.getChatByIdUserAndIdExpert(int.parse(loginManager.idCustomer.value), widget.id);
-      ratingController.getRatingByIdUserAndIdExpert(int.parse(loginManager.idCustomer.value), widget.id);
+    asyncMethod();
+  }
+
+  void asyncMethod() async {
+    await Future.delayed(Duration.zero, () async {
+      if (loginManager.role.value == "3") {
+        idCustomer = int.parse(loginManager.idCustomer.value);
+        await chatController.getChatByIdUserAndIdExpert(idCustomer, widget.idExpert);
+        await ratingController.getRatingByIdUserAndIdExpert(idCustomer, widget.idExpert);
+      } else if (loginManager.role.value == "2") {
+        idCustomer = int.parse(loginManager.idExpert.value);
+        await chatController.getChatByIdUserAndIdExpert(widget.idUser, idCustomer);
+        await ratingController.getRatingByIdUserAndIdExpert(widget.idUser, idCustomer);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white)),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          // make star icon and show bottom sheet for rating
-          IconButton(
-            icon: const Icon(Icons.star),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Obx(
-                    () {
-                      if (ratingManager.isRatingLoading.value) {
-                        return Column(
-                          children: [
-                            SizedBox(height: MediaQuery.of(context).size.height / 4),
-                            const Center(child: CircularProgressIndicator()),
-                          ],
-                        );
-                      } else if (ratingManager.isRatingError.value) {
-                        return const Center(child: Text('Error'));
-                      } else if (ratingManager.isRatingEmpty.value) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 10),
-                            Container(
-                              width: 50,
-                              height: 5,
-                              decoration: const BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                              ),
+      appBar: AppBar(title: Text(widget.title, style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white)), elevation: 0, centerTitle: true, iconTheme: const IconThemeData(color: Colors.white), actions: [
+        // make star icon and show bottom sheet for rating
+        IconButton(
+          icon: const Icon(Icons.star),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Obx(
+                  () {
+                    if (ratingManager.isRatingLoading.value) {
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 4),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    } else if (ratingManager.isRatingError.value) {
+                      return const Center(child: Text('Error'));
+                    } else if (ratingManager.isRatingEmpty.value) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 50,
+                            height: 5,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
-                            const SizedBox(height: 10),
-                            Text('Rating', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
+                          ),
+                          const SizedBox(height: 10),
+                          Text('Rating', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              if (loginManager.role.value == "3") ...[
                                 IconButton(
                                   icon: const Icon(Icons.star),
                                   onPressed: () {
@@ -106,7 +115,7 @@ class _DetailChatState extends State<DetailChat> {
                                       cancelTextColor: colorPrimary,
                                       buttonColor: colorPrimary,
                                       onConfirm: () {
-                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.id, 1);
+                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.idExpert, 1);
                                       },
                                     );
                                   },
@@ -123,7 +132,7 @@ class _DetailChatState extends State<DetailChat> {
                                       cancelTextColor: colorPrimary,
                                       buttonColor: colorPrimary,
                                       onConfirm: () {
-                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.id, 2);
+                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.idExpert, 2);
                                       },
                                     );
                                   },
@@ -140,7 +149,7 @@ class _DetailChatState extends State<DetailChat> {
                                       cancelTextColor: colorPrimary,
                                       buttonColor: colorPrimary,
                                       onConfirm: () {
-                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.id, 3);
+                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.idExpert, 3);
                                       },
                                     );
                                   },
@@ -157,7 +166,7 @@ class _DetailChatState extends State<DetailChat> {
                                       cancelTextColor: colorPrimary,
                                       buttonColor: colorPrimary,
                                       onConfirm: () {
-                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.id, 4);
+                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.idExpert, 4);
                                       },
                                     );
                                   },
@@ -174,68 +183,75 @@ class _DetailChatState extends State<DetailChat> {
                                       cancelTextColor: colorPrimary,
                                       buttonColor: colorPrimary,
                                       onConfirm: () {
-                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.id, 5);
+                                        ratingController.addRating(int.parse(loginManager.idCustomer.value), widget.idExpert, 5);
                                       },
                                     );
                                   },
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            // text anda belum memberikan rating
+                              ]
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          if (loginManager.role.value == "2") ...[
+                            Text('Pengguna Anda belum memberikan rating', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey)),
+                          ] else ...[
                             Text('Anda belum memberikan rating', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey)),
-                            const SizedBox(height: 20),
                           ],
-                        );
-                      } else if (ratingManager.isRatingSuccess.value) {
-                        print(ratingManager.rating);
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 10),
-                            Container(
-                              width: 50,
-                              height: 5,
-                              decoration: const BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                              ),
+                          const SizedBox(height: 20),
+                        ],
+                      );
+                    } else if (ratingManager.isRatingSuccess.value) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 50,
+                            height: 5,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
-                            const SizedBox(height: 10),
-                            Text('Rating', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                for (var i = 0; i < ratingManager.rating.value.first.rating; i++)
-                                  IconButton(
-                                    icon: const Icon(Icons.star, color: colorPrimary),
-                                    onPressed: () {},
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            // Text Telah Memberikan Rating
+                          ),
+                          const SizedBox(height: 10),
+                          Text('Rating', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (var i = 0; i < ratingManager.rating.value.first.rating; i++)
+                                IconButton(
+                                  icon: const Icon(Icons.star, color: colorPrimary),
+                                  onPressed: () {},
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          // Text Telah Memberikan Rating
+                          if (loginManager.role.value == "2") ...[
+                            Text('Pengguna Anda telah memberikan rating, Terimakasih', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey)),
+                          ] else ...[
                             Text('Anda telah memberikan rating, Terimakasih', style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey)),
-                            const SizedBox(height: 20),
                           ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            SizedBox(height: MediaQuery.of(context).size.height / 4),
-                            const Center(child: CircularProgressIndicator()),
-                          ],
-                        );
-                      }
-                    },
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
+
+                          const SizedBox(height: 20),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height / 4),
+                          const Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    }
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ]),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -343,7 +359,13 @@ class _DetailChatState extends State<DetailChat> {
                 Get.showSnackbar(snackBarError('Pesan Tidak Boleh Kosong'));
                 return;
               } else {
-                chatController.addChat(int.parse(loginManager.idCustomer.value), widget.id, text, roleName);
+                if (loginManager.role.value == "3") {
+                  idCustomer = int.parse(loginManager.idCustomer.value);
+                  chatController.addChat(idCustomer, widget.idExpert, text, roleName);
+                } else if (loginManager.role.value == "2") {
+                  idCustomer = int.parse(loginManager.idExpert.value);
+                  chatController.addChat(widget.idUser, idCustomer, text, roleName);
+                }
               }
             },
             sendButtonColor: colorPrimary,

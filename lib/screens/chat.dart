@@ -90,12 +90,24 @@ class _ChatState extends State<Chat> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: bookingManager.booking.length,
                       itemBuilder: (BuildContext context, int index) {
+                        dynamic name;
+                        dynamic image;
+                        if (loginManager.role.value == "3") {
+                          name = bookingManager.booking[index].experts.name;
+                          image = bookingManager.booking[index].experts.avatar;
+                        } else if (loginManager.role.value == "2") {
+                          name = bookingManager.booking[index].customers.name;
+                          image = "assets/images/person.png";
+                        }
                         return ChatList(
                           id: bookingManager.booking[index].id,
-                          name: bookingManager.booking[index].experts.name,
-                          image: bookingManager.booking[index].experts.avatar,
+                          idUser: bookingManager.booking[index].idUser,
+                          idExpert: bookingManager.booking[index].experts.id,
+                          name: name,
+                          image: image,
                           lastMessage: 'Hello, I want to ask about my dog',
                           lastMessageTime: '12:00',
+                          bookManager: bookingManager.booking[index],
                         );
                       },
                     );
