@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:circle_bottom_navigation_bar/circle_bottom_navigation_bar.dart';
 import 'package:circle_bottom_navigation_bar/widgets/tab_data.dart';
+import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
+import 'package:makassar_pet_clinic/cores/login_manager.dart';
+import 'package:makassar_pet_clinic/main.dart';
 import 'package:makassar_pet_clinic/screens/book.dart';
 import 'package:makassar_pet_clinic/screens/chat.dart';
+import 'package:makassar_pet_clinic/screens/customer.dart';
 import 'package:makassar_pet_clinic/screens/dashboard.dart';
 import 'package:makassar_pet_clinic/screens/profile.dart';
 
@@ -16,13 +20,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final LoginManager loginManager = Get.put(LoginManager());
   int currentPage = 0;
-  final List<Widget> _pages = [
-    const Dashboard(),
-    const Chat(),
-    const Book(),
-    const Profile(),
-  ];
+  late final List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    asyncMethod();
+  }
+
+  void asyncMethod() async {
+    setState(() {
+      if (loginManager.role.value == "3" || loginManager.role.value == "2") {
+        _pages.add(const Dashboard());
+        _pages.add(const Chat());
+        _pages.add(const Book());
+        _pages.add(const Profile());
+      } else {
+        _pages.add(const Dashboard());
+        _pages.add(const Customer());
+        _pages.add(const Profile());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,33 +88,57 @@ class _HomeState extends State<Home> {
 
 List<TabData> getTabsData() {
   return [
-    TabData(
-      icon: Icons.home,
-      iconSize: 20.0,
-      title: 'Dashboard',
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-    ),
-    TabData(
-      icon: Icons.chat,
-      iconSize: 20,
-      title: 'Chat',
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-    ),
-    TabData(
-      icon: Icons.book,
-      iconSize: 20,
-      title: 'Book',
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-    ),
-    TabData(
-      icon: Icons.person,
-      iconSize: 20,
-      title: 'Profile',
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-    ),
+    if (loginManager.role.value == "3" || loginManager.role.value == "2") ...[
+      TabData(
+        icon: Icons.home,
+        iconSize: 20.0,
+        title: 'Dashboard',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      TabData(
+        icon: Icons.chat,
+        iconSize: 20,
+        title: 'Chat',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      TabData(
+        icon: Icons.book,
+        iconSize: 20,
+        title: 'Book',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      TabData(
+        icon: Icons.person,
+        iconSize: 20,
+        title: 'Profile',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+    ] else ...[
+      TabData(
+        icon: Icons.home,
+        iconSize: 20.0,
+        title: 'Dashboard',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      TabData(
+        icon: Icons.group,
+        iconSize: 20,
+        title: 'Customer',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      TabData(
+        icon: Icons.person,
+        iconSize: 20,
+        title: 'Profile',
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+    ]
   ];
 }

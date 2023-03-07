@@ -25,6 +25,16 @@ class DoctorController extends GetxController {
     }
   }
 
+  Future<void> getDoctorWithFilter(String name) async {
+    final response = await doctorService.getDoctorWithFilter(name);
+    if (response == null) {
+      Get.showSnackbar(snackBarError("Gagal Mendapatkan Dokter"));
+      doctorManager.saveDoctorWithFilter(null);
+    } else {
+      doctorManager.saveDoctorWithFilter(response);
+    }
+  }
+
   Future<void> addDoctor(
     String name,
     String email,

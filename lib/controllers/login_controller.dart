@@ -80,7 +80,15 @@ class LoginController extends GetxController {
           "addressDoctor": doctorManager.doctor.first.address.toString(),
           "avatarDoctor": doctorManager.doctor.first.avatar.toString(),
         };
-      } else if (response.users.first.role == "1") {}
+      } else if (response.users.first.role == "1") {
+        user = {
+          "id": response.users.first.id.toString(),
+          "name": response.users.first.name,
+          "username": response.users.first.username,
+          "password": response.users.first.password,
+          "role": response.users.first.role,
+        };
+      }
 
       loginManager.logIn(user['username'], user);
       Get.offAll(() => const Home());

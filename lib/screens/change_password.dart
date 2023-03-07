@@ -5,32 +5,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
-import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
+import 'package:makassar_pet_clinic/controllers/user_controller.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
-import 'package:makassar_pet_clinic/screens/login.dart';
 
-class ChangeProfile extends StatefulWidget {
-  const ChangeProfile({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<ChangeProfile> createState() => ChangeProfileState();
+  State<ChangePassword> createState() => ChangePasswordState();
 }
 
-class ChangeProfileState extends State<ChangeProfile> {
+class ChangePasswordState extends State<ChangePassword> {
   final LoginManager loginManager = Get.put(LoginManager());
-  final CustomerController customerController = Get.put(CustomerController());
+  final UserController userController = Get.put(UserController());
   late String name = '';
   late String email = '';
   late String avatar = 'assets/images/person.png';
 
-  TextEditingController nameCustomerController = TextEditingController();
-  TextEditingController emailCustomerControllerCustomer = TextEditingController();
-  TextEditingController addressCustomerController = TextEditingController();
-  TextEditingController phoneCustomerController = TextEditingController();
-  TextEditingController petTypeCustomerController = TextEditingController();
-  TextEditingController petNameCustomerController = TextEditingController();
-  TextEditingController petAgeCustomerController = TextEditingController();
-  TextEditingController petGenderCustomerController = TextEditingController();
+  TextEditingController passwordLamaController = TextEditingController();
+  TextEditingController passwordBaruController = TextEditingController();
 
   @override
   void initState() {
@@ -54,6 +47,9 @@ class ChangeProfileState extends State<ChangeProfile> {
       name = loginManager.nameDoctor.value;
       email = loginManager.emailDoctor.value;
       avatar = loginManager.avatarDoctor.value;
+    } else {
+      name = loginManager.name.value;
+      email = "admin@gmail.com";
     }
     return Scaffold(
       appBar: AppBar(
@@ -186,51 +182,15 @@ class ChangeProfileState extends State<ChangeProfile> {
                     ),
                     // make change name customer with padding
                     InputTextField(
-                      controller: nameCustomerController,
-                      hintText: 'Masukkan Nama',
-                      value: loginManager.nameCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: emailCustomerControllerCustomer,
-                      hintText: 'Masukkan Email',
-                      value: loginManager.emailCustomer.value,
+                      controller: passwordLamaController,
+                      hintText: 'Masukkan Password Lama',
+                      value: loginManager.password.value,
                       disabledInput: false,
                     ),
                     InputTextField(
-                      controller: addressCustomerController,
-                      hintText: 'Masukkan Alamat',
-                      value: loginManager.addressCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: phoneCustomerController,
-                      hintText: 'Masukkan Nomor Telepon',
-                      value: loginManager.phoneCustomer.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petTypeCustomerController,
-                      hintText: 'Masukkan Jenis Hewan',
-                      value: loginManager.petType.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petNameCustomerController,
-                      hintText: 'Masukkan Nama Hewan',
-                      value: loginManager.petName.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petAgeCustomerController,
-                      hintText: 'Masukkan Umur Hewan',
-                      value: loginManager.petAge.value,
-                      disabledInput: true,
-                    ),
-                    InputTextField(
-                      controller: petGenderCustomerController,
-                      hintText: 'Masukkan Jenis Kelamin Hewan',
-                      value: loginManager.petGender.value,
+                      controller: passwordBaruController,
+                      hintText: 'Masukkan Pasword Baru',
+                      value: "",
                       disabledInput: true,
                     ),
                     const SizedBox(
@@ -242,33 +202,14 @@ class ChangeProfileState extends State<ChangeProfile> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (nameCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nama tidak boleh kosong'));
-                          } else if (emailCustomerControllerCustomer.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Email tidak boleh kosong'));
-                          } else if (addressCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Alamat tidak boleh kosong'));
-                          } else if (phoneCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nomor Telepon tidak boleh kosong'));
-                          } else if (petTypeCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Jenis Hewan tidak boleh kosong'));
-                          } else if (petNameCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Nama Hewan tidak boleh kosong'));
-                          } else if (petAgeCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Umur Hewan tidak boleh kosong'));
-                          } else if (petGenderCustomerController.text.isEmpty) {
-                            Get.showSnackbar(snackBarError('Jenis Kelamin Hewan tidak boleh kosong'));
+                          if (passwordLamaController.text == loginManager.password.value) {
+                            if (passwordBaruController.text.isEmpty) {
+                              Get.showSnackbar(snackBarError("Password Baru Tidak Boleh Kosong"));
+                            } else {
+                              userController.updatePassword(int.parse(loginManager.id.value), passwordBaruController.text);
+                            }
                           } else {
-                            customerController.updateCustomer(
-                              int.parse(loginManager.idCustomer.value),
-                              nameCustomerController.text,
-                              addressCustomerController.text,
-                              phoneCustomerController.text,
-                              petTypeCustomerController.text,
-                              petNameCustomerController.text,
-                              petAgeCustomerController.text,
-                              petGenderCustomerController.text,
-                            );
+                            Get.snackbar("Gagal", "Password Lama Salah");
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -278,7 +219,7 @@ class ChangeProfileState extends State<ChangeProfile> {
                           ),
                         ),
                         child: const Text(
-                          'Simpan',
+                          'Update',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -319,8 +260,8 @@ class InputTextField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: TextFormField(
         controller: controller,
+        obscureText: true,
         decoration: InputDecoration(
-          // make disabled input
           enabled: disabledInput,
           hintText: hintText,
           hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),

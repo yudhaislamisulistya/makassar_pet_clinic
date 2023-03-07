@@ -3,20 +3,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
+import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
 import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
+import 'package:makassar_pet_clinic/cores/customer_manager.dart';
 import 'package:makassar_pet_clinic/cores/doctor_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
-class Doctor extends StatefulWidget {
-  const Doctor({super.key});
+class Customer extends StatefulWidget {
+  const Customer({super.key});
 
   @override
-  State<Doctor> createState() => _DoctorState();
+  State<Customer> createState() => _CustomerState();
 }
 
-class _DoctorState extends State<Doctor> {
-  final DoctorController doctorController = Get.put(DoctorController());
-  final DoctorManager doctorManager = Get.put(DoctorManager());
+class _CustomerState extends State<Customer> {
+  final CustomerController customerController = Get.put(CustomerController());
+  final CustomerManager customerManager = Get.put(CustomerManager());
   final LoginManager loginManager = Get.put(LoginManager());
 
   TextEditingController nameController = TextEditingController();
@@ -32,8 +34,8 @@ class _DoctorState extends State<Doctor> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      doctorManager.doctor.clear();
-      doctorController.getDoctor();
+      customerManager.customer.clear();
+      customerController.getCustomer();
     });
   }
 
@@ -44,7 +46,7 @@ class _DoctorState extends State<Doctor> {
         backgroundColor: colorWhite,
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
-          title: Text('Doctor', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+          title: Text('Customer', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
           elevation: 0,
           actions: <Widget>[
             // Make Button Search
@@ -53,7 +55,7 @@ class _DoctorState extends State<Doctor> {
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: MySearchDelegate(doctorManager),
+                  delegate: MySearchDelegate(customerManager),
                   useRootNavigator: true,
                 );
               },
@@ -242,25 +244,25 @@ class _DoctorState extends State<Doctor> {
                                   } else if (addressController.text.isEmpty) {
                                     Get.snackbar('Error', 'Address is required');
                                   } else {
-                                    await doctorController.addDoctor(
-                                      nameController.text,
-                                      emailController.text,
-                                      specializationController.text,
-                                      int.parse(experienceYearsController.text),
-                                      aboutController.text,
-                                      phoneController.text,
-                                      selectedAvatar!,
-                                      addressController.text,
-                                    );
+                                    // await doctorController.addDoctor(
+                                    //   nameController.text,
+                                    //   emailController.text,
+                                    //   specializationController.text,
+                                    //   int.parse(experienceYearsController.text),
+                                    //   aboutController.text,
+                                    //   phoneController.text,
+                                    //   selectedAvatar!,
+                                    //   addressController.text,
+                                    // );
 
-                                    // Clear input controller
-                                    nameController.clear();
-                                    emailController.clear();
-                                    specializationController.clear();
-                                    experienceYearsController.clear();
-                                    aboutController.clear();
-                                    phoneController.clear();
-                                    addressController.clear();
+                                    // // Clear input controller
+                                    // nameController.clear();
+                                    // emailController.clear();
+                                    // specializationController.clear();
+                                    // experienceYearsController.clear();
+                                    // aboutController.clear();
+                                    // phoneController.clear();
+                                    // addressController.clear();
                                   }
                                 },
                                 child: Text('Save', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
@@ -282,16 +284,16 @@ class _DoctorState extends State<Doctor> {
             children: [
               Obx(
                 () {
-                  if (doctorManager.isDoctorLoading.value) {
+                  if (customerManager.isCustomerLoading.value) {
                     return Column(
                       children: [
                         SizedBox(height: MediaQuery.of(context).size.height / 4),
                         const Center(child: CircularProgressIndicator()),
                       ],
                     );
-                  } else if (doctorManager.isDoctorError.value) {
+                  } else if (customerManager.isCustomerError.value) {
                     return const Center(child: Text('Error'));
-                  } else if (doctorManager.isDoctorEmpty.value) {
+                  } else if (customerManager.isCustomerEmpty.value) {
                     return Column(
                       children: [
                         SizedBox(height: MediaQuery.of(context).size.height / 4),
@@ -299,17 +301,18 @@ class _DoctorState extends State<Doctor> {
                         Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
                       ],
                     );
-                  } else if (doctorManager.isDoctorSuccess.value) {
+                  } else if (customerManager.isCustomerSuccess.value) {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: doctorManager.doctor.length,
+                      itemCount: customerManager.customer.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return doctor_component.Doctor(
-                          index: index,
-                          doctorManager: doctorManager,
-                          rating: 2,
-                        );
+                        return ListTile(title: Text("Selamat Datang"));
+                        // return doctor_component.Doctor(
+                        //   index: index,
+                        //   customerManager: customerManager,
+                        //   rating: 2,
+                        // );
                       },
                     );
                   } else {
@@ -331,8 +334,8 @@ class _DoctorState extends State<Doctor> {
 }
 
 class MySearchDelegate extends SearchDelegate<String> {
-  final DoctorManager doctorManager;
-  MySearchDelegate(this.doctorManager);
+  final CustomerManager customerManager;
+  MySearchDelegate(this.customerManager);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -371,22 +374,22 @@ class MySearchDelegate extends SearchDelegate<String> {
         ),
       );
     } else {
-      doctor = doctorManager.doctor.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
+      doctor = customerManager.customer.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
       return SingleChildScrollView(
         child: Column(
           children: [
             Obx(
               () {
-                if (doctorManager.isDoctorLoading.value) {
+                if (customerManager.isCustomerLoading.value) {
                   return Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 4),
                       const Center(child: CircularProgressIndicator()),
                     ],
                   );
-                } else if (doctorManager.isDoctorError.value) {
+                } else if (customerManager.isCustomerError.value) {
                   return const Center(child: Text('Error'));
-                } else if (doctorManager.isDoctorEmpty.value) {
+                } else if (customerManager.isCustomerEmpty.value) {
                   return Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 4),
@@ -394,7 +397,7 @@ class MySearchDelegate extends SearchDelegate<String> {
                       Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
                     ],
                   );
-                } else if (doctorManager.isDoctorSuccess.value) {
+                } else if (customerManager.isCustomerSuccess.value) {
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -402,7 +405,7 @@ class MySearchDelegate extends SearchDelegate<String> {
                     itemBuilder: (BuildContext context, int index) {
                       return doctor_component.Doctor(
                         index: index,
-                        doctorManager: doctorManager,
+                        doctorManager: customerManager,
                         rating: 2,
                       );
                     },
@@ -438,22 +441,22 @@ class MySearchDelegate extends SearchDelegate<String> {
         ),
       );
     } else {
-      doctor = doctorManager.doctor.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
+      doctor = customerManager.customer.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
       return SingleChildScrollView(
         child: Column(
           children: [
             Obx(
               () {
-                if (doctorManager.isDoctorLoading.value) {
+                if (customerManager.isCustomerLoading.value) {
                   return Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 4),
                       const Center(child: CircularProgressIndicator()),
                     ],
                   );
-                } else if (doctorManager.isDoctorError.value) {
+                } else if (customerManager.isCustomerError.value) {
                   return const Center(child: Text('Error'));
-                } else if (doctorManager.isDoctorEmpty.value) {
+                } else if (customerManager.isCustomerEmpty.value) {
                   return Column(
                     children: [
                       SizedBox(height: MediaQuery.of(context).size.height / 4),
@@ -461,7 +464,7 @@ class MySearchDelegate extends SearchDelegate<String> {
                       Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
                     ],
                   );
-                } else if (doctorManager.isDoctorSuccess.value) {
+                } else if (customerManager.isCustomerSuccess.value) {
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -469,7 +472,7 @@ class MySearchDelegate extends SearchDelegate<String> {
                     itemBuilder: (BuildContext context, int index) {
                       return doctor_component.Doctor(
                         index: index,
-                        doctorManager: doctorManager,
+                        doctorManager: customerManager,
                         rating: 2,
                       );
                     },

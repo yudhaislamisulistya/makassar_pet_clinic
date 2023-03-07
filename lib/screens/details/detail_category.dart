@@ -33,10 +33,14 @@ class _DetailCategoryState extends State<DetailCategory> with SingleTickerProvid
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    asyncMethod();
+  }
+
+  void asyncMethod() async {
     Future.delayed(Duration.zero, () {
-      doctorManager.doctor.clear();
-      doctorController.getDoctor();
+      doctorManager.doctorWithFilter.clear();
       informationManager.information.clear();
+      doctorController.getDoctorWithFilter(widget.name ?? '');
       informationController.getInformationWithFilter(widget.name ?? '');
       categoryController.text = widget.name ?? '';
     });
@@ -215,7 +219,7 @@ class _DetailCategoryState extends State<DetailCategory> with SingleTickerProvid
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: doctorManager.doctor.length,
+                          itemCount: doctorManager.doctorWithFilter.length,
                           itemBuilder: (BuildContext context, int index) {
                             return doctor_component.Doctor(
                               index: index,

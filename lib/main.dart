@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.lato().fontFamily,
         primarySwatch: colorPrimarySwatch,
       ),
+      darkTheme: Get.isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: loginManager.isAuthenticated.value ? const Home() : const Login(),
     );
   }

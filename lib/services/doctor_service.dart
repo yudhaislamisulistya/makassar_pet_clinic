@@ -16,6 +16,15 @@ class DoctorService extends GetConnect {
     }
   }
 
+  Future<DoctorResponseModel?> getDoctorWithFilter(String name) async {
+    final response = await supabase.from('experts').select().ilike('specialization', '%$name%');
+    if (response.isEmpty) {
+      return null;
+    } else {
+      return DoctorResponseModel.fromJson(response);
+    }
+  }
+
   Future<bool> addDoctor(DoctorRequestModel model) async {
     try {
       if (model.avatar == "Avatar 1") {

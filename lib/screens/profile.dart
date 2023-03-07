@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
+import 'package:makassar_pet_clinic/screens/change_password.dart';
 import 'package:makassar_pet_clinic/screens/change_profile.dart';
 import 'package:makassar_pet_clinic/screens/login.dart';
 
@@ -31,6 +32,10 @@ class ProfileState extends State<Profile> {
       name = loginManager.nameDoctor.value;
       email = loginManager.emailDoctor.value;
       avatar = loginManager.avatarDoctor.value;
+    } else if (loginManager.role.value == "1") {
+      name = loginManager.name.value;
+      email = "admin@gmail.com";
+      avatar = 'assets/images/person.png';
     }
     return Scaffold(
       appBar: AppBar(
@@ -157,14 +162,26 @@ class ProfileState extends State<Profile> {
                       'Pengaturan',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
                     ),
+                    if (loginManager.role.value == "3" || loginManager.role.value == "2") ...[
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => const ChangeProfile());
+                        },
+                        child: ListInformasiLainnya(
+                          title: 'Update Profile',
+                          subtitle: "Tap",
+                          icon: Icons.change_circle,
+                        ),
+                      ),
+                    ],
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => const ChangeProfile());
+                        Get.to(() => const ChangePassword());
                       },
                       child: ListInformasiLainnya(
-                        title: 'Update Profile',
+                        title: 'Update Password',
                         subtitle: "Tap",
-                        icon: Icons.change_circle,
+                        icon: Icons.password,
                       ),
                     ),
                     GestureDetector(
@@ -177,7 +194,10 @@ class ProfileState extends State<Profile> {
                           confirmTextColor: Colors.white,
                           cancelTextColor: colorDark,
                           buttonColor: colorDark,
-                          onConfirm: () {},
+                          onConfirm: () {
+                            Get.back();
+                            Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                          },
                         );
                       },
                       child: ListInformasiLainnya(

@@ -42,6 +42,17 @@ class _CategoryState extends State<Category> {
           title: Text('Category', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
           elevation: 0,
           actions: <Widget>[
+            // Make Button Search
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: MySearchDelegate(categoryManager),
+                  useRootNavigator: true,
+                );
+              },
+            ),
             if (loginManager.role.value == '1') ...[
               IconButton(
                 icon: const Icon(Icons.add),
@@ -207,5 +218,164 @@ class _CategoryState extends State<Category> {
         ),
       ),
     );
+  }
+}
+
+class MySearchDelegate extends SearchDelegate<String> {
+  final CategoryManager categoryManager;
+  MySearchDelegate(this.categoryManager);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    dynamic category;
+    if (query.isEmpty) {
+      category = [];
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 4),
+            SvgPicture.asset('assets/svg/not_found.svg', width: 300),
+            Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+          ],
+        ),
+      );
+    } else {
+      category = categoryManager.category.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Obx(
+              () {
+                if (categoryManager.isCategoryLoading.value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                } else if (categoryManager.isCategoryError.value) {
+                  return const Center(child: Text('Error'));
+                } else if (categoryManager.isCategoryEmpty.value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      SvgPicture.asset('assets/svg/not_found.svg', width: 300),
+                      Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+                    ],
+                  );
+                } else if (categoryManager.isCategorySuccess.value) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: category.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return category_list_component.CategoryList(
+                        index: index,
+                        categoryManager: categoryManager,
+                      );
+                    },
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    dynamic category;
+    if (query.isEmpty) {
+      category = [];
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 4),
+            SvgPicture.asset('assets/svg/not_found.svg', width: 300),
+            Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+          ],
+        ),
+      );
+    } else {
+      category = categoryManager.category.where((element) => element.name.toLowerCase().contains(query.toLowerCase())).toList();
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Obx(
+              () {
+                if (categoryManager.isCategoryLoading.value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                } else if (categoryManager.isCategoryError.value) {
+                  return const Center(child: Text('Error'));
+                } else if (categoryManager.isCategoryEmpty.value) {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      SvgPicture.asset('assets/svg/not_found.svg', width: 300),
+                      Center(child: Text('Data Tidak Tersedia', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.grey))),
+                    ],
+                  );
+                } else if (categoryManager.isCategorySuccess.value) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: category.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return category_list_component.CategoryList(
+                        index: index,
+                        categoryManager: categoryManager,
+                      );
+                    },
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      const Center(child: CircularProgressIndicator()),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

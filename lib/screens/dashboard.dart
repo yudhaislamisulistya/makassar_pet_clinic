@@ -14,6 +14,7 @@ import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:makassar_pet_clinic/screens/category.dart' as category_screen;
 import 'package:makassar_pet_clinic/screens/doctor.dart' as doctor_screen;
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
+import 'package:makassar_pet_clinic/screens/profile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -99,15 +100,21 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     // Make Profile Picture Rectangle With Image
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: colorPrimary,
-                        borderRadius: borderRadiusRectangle,
-                        image: DecorationImage(
-                          image: AssetImage(avatar),
-                          fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () {
+                        // make error getx snack bar
+                        Get.to(() => const Profile());
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: colorPrimary,
+                          borderRadius: borderRadiusRectangle,
+                          image: DecorationImage(
+                            image: AssetImage(avatar),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -179,27 +186,32 @@ class _DashboardState extends State<Dashboard> {
                           height: Get.height * 0.02,
                         ),
                         // Make Search Bar
-                        Container(
-                          height: Get.height * 0.05,
-                          width: Get.width,
-                          decoration: const BoxDecoration(
-                            color: colorWhite,
-                            borderRadius: borderRadiusRectangle,
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: Get.width * 0.05,
-                              ),
-                              const Icon(
-                                Icons.search,
-                                color: colorPrimary,
-                              ),
-                              SizedBox(
-                                width: Get.width * 0.05,
-                              ),
-                              Text("Search", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorPrimary)),
-                            ],
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => const doctor_screen.Doctor());
+                          },
+                          child: Container(
+                            height: Get.height * 0.05,
+                            width: Get.width,
+                            decoration: const BoxDecoration(
+                              color: colorWhite,
+                              borderRadius: borderRadiusRectangle,
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: Get.width * 0.05,
+                                ),
+                                const Icon(
+                                  Icons.search,
+                                  color: colorPrimary,
+                                ),
+                                SizedBox(
+                                  width: Get.width * 0.05,
+                                ),
+                                Text("Search", style: Theme.of(context).textTheme.titleSmall!.copyWith(color: colorPrimary)),
+                              ],
+                            ),
                           ),
                         ),
                       ],
