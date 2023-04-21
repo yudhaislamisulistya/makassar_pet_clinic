@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/category.dart';
+import 'package:makassar_pet_clinic/components/pet_shop.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/category_controller.dart';
 import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
@@ -14,6 +15,7 @@ import 'package:makassar_pet_clinic/cores/login_manager.dart';
 import 'package:makassar_pet_clinic/screens/category.dart' as category_screen;
 import 'package:makassar_pet_clinic/screens/doctor.dart' as doctor_screen;
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
+import 'package:makassar_pet_clinic/screens/other_pet_beauty.dart';
 import 'package:makassar_pet_clinic/screens/profile.dart';
 
 class Dashboard extends StatefulWidget {
@@ -287,6 +289,59 @@ class _DashboardState extends State<Dashboard> {
                       );
                     }
                   },
+                ),
+              ),
+              SizedBox(
+                height: Get.height * 0.01,
+              ),
+              Padding(
+                padding: EdgeInsets.all(Get.height * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Other Pet Shop", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold)),
+                        InkWell(
+                            onTap: () {
+                              Get.to(const doctor_screen.Doctor());
+                            },
+                            child: Text("See All", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorGrayDark))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => OtherPetBeauty(),
+                        );
+                      },
+                      child: PetShop(
+                        isPadding: true,
+                        title: "Pet Salon",
+                        image: "assets/images/pet-salon.png",
+                      ),
+                    ),
+                    PetShop(
+                      isPadding: false,
+                      title: "Pet Klinik",
+                      image: "assets/images/pet-clinic.png",
+                    ),
+                    PetShop(
+                      isPadding: false,
+                      title: "Pet Hotel",
+                      image: "assets/images/pet-hotel.png",
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
