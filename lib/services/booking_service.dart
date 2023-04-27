@@ -68,8 +68,6 @@ class BookingService extends GetConnect {
     var responseExpert = experts;
     var responseCustomer = customers;
 
-    print(responseCustomer);
-
     if (response.isEmpty) {
       return null;
     } else {

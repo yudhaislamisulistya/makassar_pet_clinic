@@ -8,7 +8,6 @@ class PetBeautyService extends GetConnect {
 
   Future<PetBeautyResponseModel?> getPetBeauty() async {
     final response = await supabase.from('pet_beauty').select();
-    print(response);
     if (response.isEmpty) {
       return null;
     } else {

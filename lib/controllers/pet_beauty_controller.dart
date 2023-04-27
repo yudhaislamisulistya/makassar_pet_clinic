@@ -17,7 +17,6 @@ class PetBeautyController extends GetxController {
 
   Future<void> getPetBeauty() async {
     final response = await petBeautyService.getPetBeauty();
-    print(response);
     if (response == null) {
       Get.showSnackbar(snackBarError("Gagal Mendapatkan Pet Salon"));
       petBeautyManager.savePetBeauty(null);
