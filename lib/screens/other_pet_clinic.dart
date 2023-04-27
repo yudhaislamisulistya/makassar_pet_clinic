@@ -34,7 +34,7 @@ class _OtherPetClinicState extends State<OtherPetClinic> {
           color: Colors.white,
         ),
         title: Text(
-          'Informasi Lainnya Pet Salon',
+          'Informasi Lainnya Pet Klinik',
           style: TextStyle(color: Colors.white),
         ),
       ),

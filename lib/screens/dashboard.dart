@@ -17,6 +17,7 @@ import 'package:makassar_pet_clinic/screens/doctor.dart' as doctor_screen;
 import 'package:makassar_pet_clinic/components/doctor.dart' as doctor_component;
 import 'package:makassar_pet_clinic/screens/other_pet_beauty.dart';
 import 'package:makassar_pet_clinic/screens/other_pet_clinic.dart';
+import 'package:makassar_pet_clinic/screens/other_pet_hotel.dart';
 import 'package:makassar_pet_clinic/screens/profile.dart';
 
 class Dashboard extends StatefulWidget {
@@ -344,10 +345,17 @@ class _DashboardState extends State<Dashboard> {
                         image: "assets/images/pet-clinic.png",
                       ),
                     ),
-                    PetShop(
-                      isPadding: false,
-                      title: "Pet Hotel",
-                      image: "assets/images/pet-hotel.png",
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => OtherPetHotel(),
+                        );
+                      },
+                      child: PetShop(
+                        isPadding: false,
+                        title: "Pet Hotel",
+                        image: "assets/images/pet-hotel.png",
+                      ),
                     ),
                   ],
                 ),
