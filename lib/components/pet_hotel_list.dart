@@ -17,7 +17,7 @@ class PetHotelList extends StatelessWidget {
       child: ListTile(
         leading: Container(
           height: double.infinity,
-          child: Icon(Icons.cleaning_services),
+          child: Icon(Icons.hotel),
         ),
         title: Text(petHotel.hotelName ?? '', style: Theme.of(context).textTheme.titleLarge),
         subtitle: Column(

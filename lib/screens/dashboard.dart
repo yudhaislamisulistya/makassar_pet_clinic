@@ -305,11 +305,6 @@ class _DashboardState extends State<Dashboard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Other Pet Shop", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorPrimary, fontWeight: FontWeight.bold)),
-                        InkWell(
-                            onTap: () {
-                              Get.to(const doctor_screen.Doctor());
-                            },
-                            child: Text("See All", style: Theme.of(context).textTheme.titleMedium!.copyWith(color: colorGrayDark))),
                       ],
                     ),
                   ],
