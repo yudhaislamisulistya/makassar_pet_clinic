@@ -17,6 +17,7 @@ class PetBeautyController extends GetxController {
 
   Future<void> getPetBeauty() async {
     final response = await petBeautyService.getPetBeauty();
+    print(response);
     if (response == null) {
       Get.showSnackbar(snackBarError("Gagal Mendapatkan Pet Salon"));
       petBeautyManager.savePetBeauty(null);
@@ -29,7 +30,7 @@ class PetBeautyController extends GetxController {
     String name,
     String location,
     String phone,
-    String serviceOffered,
+    String servicesOffered,
     String owner,
     String serviceCost,
   ) async {
@@ -37,7 +38,7 @@ class PetBeautyController extends GetxController {
       name: name,
       location: location,
       phone: phone,
-      serviceOffered: serviceOffered,
+      servicesOffered: servicesOffered,
       owner: owner,
       serviceCost: serviceCost,
     ));
@@ -68,7 +69,7 @@ class PetBeautyController extends GetxController {
     String name,
     String location,
     String phone,
-    String serviceOffered,
+    String servicesOffered,
     String owner,
     String serviceCost,
   ) async {
@@ -77,7 +78,7 @@ class PetBeautyController extends GetxController {
       name: name,
       location: location,
       phone: phone,
-      serviceOffered: serviceOffered,
+      servicesOffered: servicesOffered,
       owner: owner,
       serviceCost: serviceCost,
     ));

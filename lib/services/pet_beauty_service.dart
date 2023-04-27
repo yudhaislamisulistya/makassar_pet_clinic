@@ -8,7 +8,7 @@ class PetBeautyService extends GetConnect {
 
   Future<PetBeautyResponseModel?> getPetBeauty() async {
     final response = await supabase.from('pet_beauty').select();
-
+    print(response);
     if (response.isEmpty) {
       return null;
     } else {
@@ -22,7 +22,7 @@ class PetBeautyService extends GetConnect {
         'name': model.name,
         'location': model.location,
         'phone': model.phone,
-        'service_offered': model.serviceOffered,
+        'services_offered': model.servicesOffered,
         'owner': model.owner,
         'service_cost': model.serviceCost,
       });
@@ -47,7 +47,7 @@ class PetBeautyService extends GetConnect {
         'name': model.name,
         'location': model.location,
         'phone': model.phone,
-        'service_offered': model.serviceOffered,
+        'services_offered': model.servicesOffered,
         'owner': model.owner,
         'service_cost': model.serviceCost,
       }).match({'id': model.id});

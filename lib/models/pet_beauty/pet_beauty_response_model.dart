@@ -3,7 +3,7 @@ class PetBeautyModel {
   final String name;
   final String location;
   final String phone;
-  final String serviceOffered;
+  final String servicesOffered;
   final String owner;
   final String serviceCost;
   final String createdAt;
@@ -13,7 +13,7 @@ class PetBeautyModel {
     required this.name,
     required this.location,
     required this.phone,
-    required this.serviceOffered,
+    required this.servicesOffered,
     required this.owner,
     required this.serviceCost,
     required this.createdAt,
@@ -25,7 +25,7 @@ class PetBeautyModel {
       name: json['name'],
       location: json['location'],
       phone: json['phone'],
-      serviceOffered: json['service_offered'],
+      servicesOffered: json['services_offered'],
       owner: json['owner'],
       serviceCost: json['service_cost'],
       createdAt: json['created_at'],

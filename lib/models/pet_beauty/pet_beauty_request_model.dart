@@ -3,7 +3,7 @@ class PetBeautyRequestModel {
   String? name;
   String? location;
   String? phone;
-  String? serviceOffered;
+  String? servicesOffered;
   String? owner;
   String? serviceCost;
   String? createdAt;
@@ -13,7 +13,7 @@ class PetBeautyRequestModel {
     this.name,
     this.location,
     this.phone,
-    this.serviceOffered,
+    this.servicesOffered,
     this.owner,
     this.serviceCost,
     this.createdAt,
@@ -25,7 +25,7 @@ class PetBeautyRequestModel {
       'name': name,
       'location': location,
       'phone': phone,
-      'service_offered': serviceOffered,
+      'services_offered': servicesOffered,
       'owner': owner,
       'service_cost': serviceCost,
       'created_at': createdAt,
