@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/login_controller.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
-import 'package:makassar_pet_clinic/screens/home_customer_expert.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
