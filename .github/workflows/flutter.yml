@@ -8,14 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2.10.0
         with:
-          flutter-version: '2.x' # Ganti dengan versi Flutter yang diinginkan
+          flutter-version: '3.7.0'
+          channel: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
