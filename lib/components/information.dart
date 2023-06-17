@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/information_controller.dart';
 import 'package:makassar_pet_clinic/main.dart';
-import 'package:makassar_pet_clinic/screens/details/detail_category.dart';
 
 class Information extends StatelessWidget {
   final int index;

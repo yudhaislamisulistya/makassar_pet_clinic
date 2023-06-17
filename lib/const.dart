@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/screens/login.dart';
+import 'package:intl/intl.dart';
 
 String urlSupabase = 'https://uilsyzbuczmhoqlqvuhf.supabase.co';
 String anonKeySupabase = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbHN5emJ1Y3ptaG9xbHF2dWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc5MzU2NDYsImV4cCI6MTk5MzUxMTY0Nn0.BNUrhNUyKrpWXujuwy8ix_GyjTfpn-MCSCZIeGalOHM';
@@ -172,3 +173,8 @@ BoxDecoration boxDecorationPrimary = BoxDecoration(
     ),
   ],
 );
+
+String convertToRupiah(String value) {
+  final money = NumberFormat('#,##0', 'en_US');
+  return 'Rp. ${money.format(int.parse(value))}';
+}
