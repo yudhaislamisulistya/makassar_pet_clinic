@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/customer_controller.dart';
-import 'package:makassar_pet_clinic/controllers/doctor_controller.dart';
 import 'package:makassar_pet_clinic/cores/customer_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
-import 'package:makassar_pet_clinic/screens/details/detail_doctor.dart';
 
 class Customer extends StatelessWidget {
   final int index;
@@ -29,7 +27,6 @@ class Customer extends StatelessWidget {
     TextEditingController petNameCustomerController = TextEditingController();
     TextEditingController petAgeCustomerController = TextEditingController();
     TextEditingController petGenderCustomerController = TextEditingController();
-    String? selectedAvatar = "Avatar 1";
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

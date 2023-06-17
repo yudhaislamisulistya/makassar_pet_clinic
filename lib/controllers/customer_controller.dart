@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/cores/customer_manager.dart';
 import 'package:makassar_pet_clinic/models/customer/customer_request_model.dart';
-import 'package:makassar_pet_clinic/screens/login.dart';
 import 'package:makassar_pet_clinic/services/customer_service.dart';
 
 class CustomerController extends GetxController {

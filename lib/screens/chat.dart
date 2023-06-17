@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/chat_list.dart';
 import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/booking_controller.dart';
-import 'package:makassar_pet_clinic/controllers/chat_controller.dart';
 import 'package:makassar_pet_clinic/cores/booking_manager.dart';
-import 'package:makassar_pet_clinic/cores/chat_manager.dart';
 import 'package:makassar_pet_clinic/cores/login_manager.dart';
 
 class Chat extends StatefulWidget {
