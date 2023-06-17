@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/components/pet_clinic_list.dart';
+import 'package:makassar_pet_clinic/const.dart';
 import 'package:makassar_pet_clinic/controllers/pet_clinic_controller.dart';
 import 'package:makassar_pet_clinic/cores/pet_clinic_manager.dart';
 
@@ -12,9 +13,19 @@ class OtherPetClinic extends StatefulWidget {
   State<OtherPetClinic> createState() => _OtherPetClinicState();
 }
 
-class _OtherPetClinicState extends State<OtherPetClinic> {
+class _OtherPetClinicState extends State<OtherPetClinic> with SingleTickerProviderStateMixin {
   final PetClinicController petClinicController = Get.put(PetClinicController());
   final PetClinicManager petClinicManager = Get.put(PetClinicManager());
+
+  TextEditingController clinicNameController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController websiteController = TextEditingController();
+  TextEditingController operatingHoursController = TextEditingController();
+  TextEditingController servicesOfferedController = TextEditingController();
+  TextEditingController facilitiesController = TextEditingController();
 
   @override
   void initState() {
@@ -37,6 +48,239 @@ class _OtherPetClinicState extends State<OtherPetClinic> {
           'Informasi Lainnya Pet Klinik',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          // Add Button Add Information
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                context: context,
+                builder: (BuildContext context) {
+                  return SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 50,
+                            height: 5,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text('Add Pet Salon', style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold, color: colorPrimary)),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              // controller: nameController,
+                              controller: clinicNameController,
+                              decoration: InputDecoration(
+                                hintText: 'Name',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Make TextField for description
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: locationController,
+                              decoration: InputDecoration(
+                                hintText: 'Location',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: phoneController,
+                              decoration: InputDecoration(
+                                hintText: 'Phone',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: addressController,
+                              decoration: InputDecoration(
+                                hintText: 'Address',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: emailController,
+                              decoration: InputDecoration(
+                                hintText: 'Email',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: websiteController,
+                              decoration: InputDecoration(
+                                hintText: 'Website',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: operatingHoursController,
+                              decoration: InputDecoration(
+                                hintText: 'Operating Hours',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: servicesOfferedController,
+                              decoration: InputDecoration(
+                                hintText: 'Services Offered',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: facilitiesController,
+                              decoration: InputDecoration(
+                                hintText: 'Facilities',
+                                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                hintStyle: const TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Make DropdownButton for avatar
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (clinicNameController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Name is required"));
+                                return;
+                              } else if (locationController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Location is required"));
+                                return;
+                              } else if (phoneController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Phone is required"));
+                                return;
+                              } else if (addressController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Address is required"));
+                                return;
+                              } else if (emailController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Email is required"));
+                                return;
+                              } else if (websiteController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Website is required"));
+                                return;
+                              } else if (operatingHoursController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Operating Hours is required"));
+                                return;
+                              } else if (servicesOfferedController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Services Offered is required"));
+                                return;
+                              } else if (facilitiesController.text.isEmpty) {
+                                Get.back();
+                                Get.showSnackbar(snackBarError("Facilities is required"));
+                                return;
+                              } else {
+                                petClinicController.addPetClinic(
+                                  clinicNameController.text,
+                                  locationController.text,
+                                  phoneController.text,
+                                  addressController.text,
+                                  emailController.text,
+                                  websiteController.text,
+                                  operatingHoursController.text,
+                                  servicesOfferedController.text,
+                                  facilitiesController.text,
+                                );
+
+                                clinicNameController.clear();
+                                locationController.clear();
+                                phoneController.clear();
+                                addressController.clear();
+                                emailController.clear();
+                                websiteController.clear();
+                                operatingHoursController.clear();
+                                servicesOfferedController.clear();
+                                facilitiesController.clear();
+                              }
+                            },
+                            child: Text('Save', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -66,9 +310,7 @@ class _OtherPetClinicState extends State<OtherPetClinic> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: petClinicManager.petClinic.length,
                     itemBuilder: (context, index) {
-                      return PetClinicList(
-                        petClinic: petClinicManager.petClinic[index],
-                      );
+                      return PetClinicList(index: index, petClinicManager: petClinicManager);
                     },
                   );
                 } else {

@@ -18,16 +18,16 @@ class PetHotelService extends GetConnect {
   Future<bool> addPetHotel(PetHotelRequestModel model) async {
     try {
       await supabase.from('pet_hotel').insert({
-        'hotelName': model.hotelName,
+        'hotel_name': model.hotelName,
         'location': model.location,
         'phone': model.phone,
         'address': model.address,
         'email': model.email,
         'website': model.website,
-        'operatingHours': model.operatingHours,
-        'servicesOffered': model.servicesOffered,
-        'checkInTime': model.checkInTime,
-        'checkOutTime': model.checkOutTime,
+        'operating_hours': model.operatingHours,
+        'services_offered': model.servicesOffered,
+        'check_in_time': model.checkInTime,
+        'check_out_time': model.checkOutTime,
       });
       return true;
     } catch (e) {
@@ -47,16 +47,16 @@ class PetHotelService extends GetConnect {
   Future<bool> updatePetHotel(PetHotelRequestModel model) async {
     try {
       await supabase.from('pet_hotel').update({
-        'hotelName': model.hotelName,
+        'hotel_name': model.hotelName,
         'location': model.location,
         'phone': model.phone,
         'address': model.address,
         'email': model.email,
         'website': model.website,
-        'operatingHours': model.operatingHours,
-        'servicesOffered': model.servicesOffered,
-        'checkInTime': model.checkInTime,
-        'checkOutTime': model.checkOutTime,
+        'operating_hours': model.operatingHours,
+        'services_offered': model.servicesOffered,
+        'check_in_time': model.checkInTime,
+        'check_out_time': model.checkOutTime,
       }).match({'id': model.id});
       return true;
     } catch (e) {

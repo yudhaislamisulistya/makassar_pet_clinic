@@ -7,7 +7,7 @@ String urlSupabase = 'https://uilsyzbuczmhoqlqvuhf.supabase.co';
 String anonKeySupabase = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbHN5emJ1Y3ptaG9xbHF2dWhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzc5MzU2NDYsImV4cCI6MTk5MzUxMTY0Nn0.BNUrhNUyKrpWXujuwy8ix_GyjTfpn-MCSCZIeGalOHM';
 
 const String appVersionDate = '2023-03-01';
-const String appVersion = '1.0.0';
+const String appVersion = '1.0.1';
 
 const Color colorPrimary = Color(0xFFFFC727);
 const Color colorPrimaryLight = Color(0xFFFFF5C7);

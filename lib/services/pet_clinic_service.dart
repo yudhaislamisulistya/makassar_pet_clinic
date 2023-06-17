@@ -18,14 +18,14 @@ class PetClinicService extends GetConnect {
   Future<bool> addPetClinic(PetClinicRequestModel model) async {
     try {
       await supabase.from('pet_clinic').insert({
-        'clinicName': model.clinicName,
+        'clinic_name': model.clinicName,
         'location': model.location,
         'phone': model.phone,
         'address': model.address,
         'email': model.email,
         'website': model.website,
-        'operatingHours': model.operatingHours,
-        'servicesOffered': model.servicesOffered,
+        'operating_hours': model.operatingHours,
+        'services_offered': model.servicesOffered,
         'facilities': model.facilities,
       });
       return true;
@@ -46,14 +46,14 @@ class PetClinicService extends GetConnect {
   Future<bool> updatePetClinic(PetClinicRequestModel model) async {
     try {
       await supabase.from('pet_clinic').update({
-        'clinicName': model.clinicName,
+        'clinic_name': model.clinicName,
         'location': model.location,
         'phone': model.phone,
         'address': model.address,
         'email': model.email,
         'website': model.website,
-        'operatingHours': model.operatingHours,
-        'servicesOffered': model.servicesOffered,
+        'operating_hours': model.operatingHours,
+        'services_offered': model.servicesOffered,
         'facilities': model.facilities,
       }).match({'id': model.id});
       return true;
