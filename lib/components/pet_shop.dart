@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:makassar_pet_clinic/const.dart';
 
+// ignore: must_be_immutable
 class PetShop extends StatelessWidget {
   // add two variable for image and text to be passed and can null
   bool isPadding;
-  String title;
-  String image;
+  String? title;
+  String? image;
   PetShop({super.key, this.isPadding = true, this.title = "-", this.image = "assets/images/pyschologist.png"});
 
   @override
